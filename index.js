@@ -1,11 +1,16 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const salaryRoute = require('./src/routes/salary-route');
+const bodyParser = require('body-parser');
 require('dotenv').config();
 
 const dbHost = process.env.DB_HOST;
 const dbPort = process.env.DB_PORT;
 const dbName = process.env.DB_NAME;
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 const PORT = 3000;
 app.listen(PORT, () => {
@@ -18,3 +23,5 @@ mongoose.connect(`mongodb://${dbHost}:${dbPort}/${dbName}`, { useNewUrlParser: t
     .catch((err) => {
         console.log(err)
     })
+
+app.use('/salary', salaryRoute);
