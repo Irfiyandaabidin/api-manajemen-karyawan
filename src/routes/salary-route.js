@@ -4,3 +4,4 @@ const salaryController = require('../controllers/salary-controller');
 route.post('/', salaryController.create);
 
 module.exports = route;
+// coba
