@@ -23,11 +23,11 @@ const create = async (req, res) => {
       total_salary,
       payment_status,
     });
-    await salary.save();
+    const doc = await salary.save({ new: true });
     res.status(201).json({
       status: "success",
       message: "Salary added successfully",
-      data: salary
+      data: doc
     })
   } catch (err) {
     res.status(500).json({ message: err.message})

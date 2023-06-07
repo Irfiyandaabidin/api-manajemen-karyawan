@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Vacation = require('../models/vacation');
+const Vacation = require('../models/Vacation');
 
 const getAllVacations = async (req, res) => {
   try {
