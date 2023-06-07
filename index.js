@@ -1,14 +1,12 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-<<<<<<< HEAD
 const employeeRoute = require('./src/routes/employee-route');
 const vacationRoute = require('./src/routes/vacation-route');
-=======
->>>>>>> 3c5e327d07b84d699ced4b0313c4db2887901344
 const salaryRoute = require('./src/routes/salary-route');
 const loginRoute = require('./src/routes/login-route');
 const registerRoute = require('./src/routes/register-route');
+const divisionRoute = require('./src/routes/division-route');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
@@ -31,11 +29,9 @@ mongoose.connect(`mongodb://${dbHost}:${dbPort}/${dbName}`, { useNewUrlParser: t
         console.log(err)
     })
 
-<<<<<<< HEAD
 app.use('/employee', employeeRoute);
 app.use('/vacation', vacationRoute);    
-=======
->>>>>>> 3c5e327d07b84d699ced4b0313c4db2887901344
 app.use('/salary', salaryRoute);
 app.use('/login', loginRoute);
 app.use('/register', registerRoute);
+app.use('/division', divisionRoute);
