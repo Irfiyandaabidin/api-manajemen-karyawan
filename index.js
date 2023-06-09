@@ -4,10 +4,11 @@ const mongoose = require('mongoose');
 const employeeRoute = require('./src/routes/employee-route');
 const vacationRoute = require('./src/routes/vacation-route');
 const salaryRoute = require('./src/routes/salary-route');
-const loginRoute = require('./src/routes/login-route');
+const authRoute = require('./src/routes/auth-route');
 const registerRoute = require('./src/routes/register-route');
 const divisionRoute = require('./src/routes/division-route');
 const bodyParser = require('body-parser');
+const auth = require('./src/middleware/auth');
 require('dotenv').config();
 
 const dbHost = process.env.DB_HOST;
@@ -29,9 +30,9 @@ mongoose.connect(`mongodb://${dbHost}:${dbPort}/${dbName}`, { useNewUrlParser: t
         console.log(err)
     })
 
-app.use('/employee', employeeRoute);
-app.use('/vacation', vacationRoute);    
-app.use('/salary', salaryRoute);
-app.use('/login', loginRoute);
-app.use('/register', registerRoute);
-app.use('/division', divisionRoute);
+app.use('/employee', auth, employeeRoute);
+app.use('/vacation', auth, vacationRoute);    
+app.use('/salary', auth, salaryRoute);
+app.use('/register', auth, registerRoute);
+app.use('/division', auth, divisionRoute);
+app.use('/auth', authRoute);
