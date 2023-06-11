@@ -1,11 +1,10 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const employeeRoute = require('./src/routes/employee-route');
+const userRoute = require('./src/routes/user-route');
 const vacationRoute = require('./src/routes/vacation-route');
 const salaryRoute = require('./src/routes/salary-route');
 const authRoute = require('./src/routes/auth-route');
-const registerRoute = require('./src/routes/register-route');
 const divisionRoute = require('./src/routes/division-route');
 const bodyParser = require('body-parser');
 const auth = require('./src/middleware/auth');
@@ -30,9 +29,8 @@ mongoose.connect(`mongodb://${dbHost}:${dbPort}/${dbName}`, { useNewUrlParser: t
         console.log(err)
     })
 
-app.use('/employee', auth, employeeRoute);
-app.use('/vacation', auth, vacationRoute);    
-app.use('/salary', auth, salaryRoute);
-app.use('/register', auth, registerRoute);
-app.use('/division', auth, divisionRoute);
+app.use('/user', auth(), userRoute);
+app.use('/vacation', auth(), vacationRoute);    
+app.use('/salary', auth(), salaryRoute);
+app.use('/division', auth(), divisionRoute);
 app.use('/auth', authRoute);

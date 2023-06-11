@@ -6,10 +6,6 @@ const vacationSchema = new mongoose.Schema({
         ref: 'Employee',
         required: true
     },
-    vacation_id: {
-        type: Number,
-        required: true,
-    },
     start_date: {
         type: Date,
         required: true
