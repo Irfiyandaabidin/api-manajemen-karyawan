@@ -11,7 +11,7 @@ const divisionSchema = new mongoose.Schema({
   },
   employees: {
     type: [mongoose.Schema.Types.ObjectId],
-    ref: 'Employee',
+    ref: 'User',
     required: true
   },
   start_date: {
@@ -20,7 +20,7 @@ const divisionSchema = new mongoose.Schema({
   },
   head_division: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Employee',
+    ref: 'User',
     required: true
   },
   budget: {

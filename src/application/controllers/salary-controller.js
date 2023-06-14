@@ -1,5 +1,19 @@
 const mongoose = require("mongoose");
-const Salary = require("../models/Salary");
+const Salary = require("../../models/Salary");
+const User = require("../../models/User");
+const nodemailer = require("nodemailer");
+require('dotenv').config()
+
+const EMAIL = process.env.EMAIL
+const PASSWORD = process.env.PASSWORD
+
+const transporterEmail = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: EMAIL,
+    pass: PASSWORD
+  }
+})
 
 const create = async (req, res) => {
   const {
@@ -23,7 +37,25 @@ const create = async (req, res) => {
       total_salary,
       payment_status,
     });
+    const user = await User.findById(employee_id);
+    const userEmail = user.email;
     const doc = await salary.save({ new: true });
+    const mailOptions = {
+      from: EMAIL,
+      to: userEmail,
+      cc: userEmail,
+      subject: 'Sallary Paid',
+      text: `Hallo ini gajimu bulan ini Rp.${total_salary}`
+    }
+    if(payment_status === "paid"){
+      transporterEmail.sendMail(mailOptions, function(err, info){
+        if (err) {
+          throw err;
+        } else {
+          console.log('Email berhasil dikirim ' + info.response);
+        }
+      })
+    }
     res.status(201).json({
       status: "success",
       message: "Salary added successfully",
@@ -94,6 +126,7 @@ const destroy = async (req, res) => {
 
 const get = async (req, res) => {
   try {
+    console.log(req.user)
     const doc = await Salary.find();
     res.status(200).json({
       status: "success",

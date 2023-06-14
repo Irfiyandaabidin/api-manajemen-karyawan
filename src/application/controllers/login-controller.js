@@ -1,13 +1,13 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const User = require('../models/User');
+const User = require('../../models/User');
 const { check, validationResult } = require('express-validator');
 require('dotenv').config();
 
 const jwtSecret = process.env.JWT_SECRET;
 
-const login = async (req, res) => {
+module.exports = async (req, res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
         return res.status(400)
@@ -29,7 +29,8 @@ const login = async (req, res) => {
 
         const payload = {
             user: {
-                id: user.id
+                id: user.id,
+                role: user.role
             }
         }
         jwt.sign(
@@ -45,8 +46,4 @@ const login = async (req, res) => {
         console.error(err.message);
         res.status(500).json({ message: "Server error" });
     }
-}
-
-module.exports = {
-    login
 }

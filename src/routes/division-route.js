@@ -1,10 +1,11 @@
 const route = require('express').Router();
-const divisionController = require('../controllers/division-controller');
+const divisionController = require('../application/controllers/division-controller');
+const checkRole = require('../application/middleware/checkRole');
 
-route.post('/', divisionController.create);
+route.post('/', checkRole(['supervisor']),divisionController.create);
 route.get('/', divisionController.get);
 route.get('/:id', divisionController.getById);
-route.put('/:id', divisionController.update);
-route.delete('/:id', divisionController.destroy);
+route.put('/:id', checkRole(['supervisor']),divisionController.update);
+route.delete('/:id', checkRole(['supervisor']),divisionController.destroy);
 
 module.exports = route;

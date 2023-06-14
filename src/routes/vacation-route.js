@@ -1,5 +1,5 @@
 const route = require('express').Router();
-const vacationController = require('../controllers/vacation-controller');
+const vacationController = require('../application/controllers/vacation-controller');
 
 route.post('/vacation', vacationController.createVacation);
 
