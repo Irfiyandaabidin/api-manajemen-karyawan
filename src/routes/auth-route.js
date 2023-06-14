@@ -1,7 +1,7 @@
 const { check, validationResult } = require('express-validator');
 const router = require('express').Router();
-const loginController = require('../controllers/login-controller');
-const logoutController = require('../controllers/logout-controller');
+const loginController = require('../application/controllers/login-controller');
+const logoutController = require('../application/controllers/logout-controller');
 
 router.post('/login', [
     check('email', 'Please fill in a valid email.').isEmail(),

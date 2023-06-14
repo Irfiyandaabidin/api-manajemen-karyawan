@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const User = require('../models/User');
+const User = require('../../models/User');
 const bcrypt = require('bcryptjs');
 
 const create = async (req, res) => {
@@ -118,7 +118,6 @@ const update = async (req, res) => {
       message: "Access Denied."
     })
   } catch(err) {
-    console.log(err.message);
     res.status(500).json({ message: err.message });
   }
 }

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const Salary = require("../models/Salary");
-const User = require("../models/User");
+const Salary = require("../../models/Salary");
+const User = require("../../models/User");
 const nodemailer = require("nodemailer");
 require('dotenv').config()
 

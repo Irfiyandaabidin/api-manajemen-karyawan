@@ -1,4 +1,4 @@
-const Division = require("../models/Division");
+const Division = require("../../models/Division");
 
 const create = async (req, res) => {
   const {

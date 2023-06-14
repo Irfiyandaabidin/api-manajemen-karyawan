@@ -3,7 +3,6 @@ module.exports = (roles) => {
         if(roles.includes(req.user.role)){
             return next()
         }
-        console.log(roles, req.user.role)
-        res.status(403).json({ message: `Access Denied. Only ${roles} is allowed to access` })
+        res.status(401).json({ message: `Access Denied. Only ${roles} is allowed to access` })
     }
 }

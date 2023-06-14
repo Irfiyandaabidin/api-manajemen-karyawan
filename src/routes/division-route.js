@@ -1,6 +1,6 @@
 const route = require('express').Router();
-const divisionController = require('../controllers/division-controller');
-const checkRole = require('../middleware/checkRole');
+const divisionController = require('../application/controllers/division-controller');
+const checkRole = require('../application/middleware/checkRole');
 
 route.post('/', checkRole(['supervisor']),divisionController.create);
 route.get('/', divisionController.get);

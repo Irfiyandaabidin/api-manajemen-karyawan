@@ -1,5 +1,5 @@
 const route = require('express').Router();
-const salaryController = require('../controllers/salary-controller');
+const salaryController = require('../application/controllers/salary-controller');
 
 route.post('/', salaryController.create);
 route.get('/', salaryController.get);
