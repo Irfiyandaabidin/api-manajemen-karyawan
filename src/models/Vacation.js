@@ -3,12 +3,8 @@ const mongoose = require('mongoose');
 const vacationSchema = new mongoose.Schema({
     employee_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Employee',
+        ref: 'User',
         required: true
-    },
-    vacation_id: {
-        type: Number,
-        required: true,
     },
     start_date: {
         type: Date,
@@ -23,11 +19,15 @@ const vacationSchema = new mongoose.Schema({
         required: true
     },
     status: {
-        type: Boolean,
+        type: String,
+        enum: ["approved", "rejected", "await"],
+        default: "await",
         required: true
     },
     type: {
         type: String,
+        enum: ["urgent", "sick", "annual", "maternity"],
+        default: "urgent",
         required: true
     },
     duration: {
@@ -36,8 +36,8 @@ const vacationSchema = new mongoose.Schema({
     },
     remaining: {
         type: Number,
-        required: true
     },
+    
 });
 
 const Vacation = mongoose.model('Vacation', vacationSchema);

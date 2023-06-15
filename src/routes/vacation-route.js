@@ -1,14 +1,14 @@
 const route = require('express').Router();
-const vacationController = require('../controllers/vacation-controller');
+const vacationController = require('../application/controllers/vacation-controller');
 
-route.post('/vacation', vacationController.createVacation);
+route.post('/', vacationController.createVacation);
 
-route.get('/vacation', vacationController.getAllVacations);
+route.get('/', vacationController.getAllVacations);
 
-route.get('/vacation/:id', vacationController.getVacationById);
+route.get('/:id', vacationController.getVacationById);
 
-route.put('/vacation/:id', vacationController.updateVacation);
+route.put('/:id', vacationController.updateVacation);
 
-route.delete('/vacation/:id', vacationController.deleteVacation);
+route.delete('/:id', vacationController.deleteVacation);
 
 module.exports = route;
