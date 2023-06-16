@@ -42,6 +42,7 @@ describe('/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
             password: 'password123',
         });
         supervisorToken = loginSupervisor.body.token
+
     });
     afterAll(async () => {
         await deleteManyUsers();
@@ -68,7 +69,6 @@ describe('/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
             .post('/user')
             .set('x-auth-token', hrToken)
             .send(newUser);
-            console.log(res.body)
             expect(res.status).toBe(201);
             expect(res.body.data.email).toBe('johndoe@admin.com');
             expect(res.body.data.role).toBe('employee');

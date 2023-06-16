@@ -6,6 +6,7 @@ const vacationRoute = require('./src/routes/vacation-route');
 const salaryRoute = require('./src/routes/salary-route');
 const authRoute = require('./src/routes/auth-route');
 const divisionRoute = require('./src/routes/division-route');
+const attendanceRoute = require('./src/routes/attendance-route');
 const bodyParser = require('body-parser');
 const auth = require('./src/application/middleware/auth');
 require('dotenv').config();
@@ -26,11 +27,12 @@ function server() {
             console.log(err)
         })
     
-    app.use('/user', userRoute);
+    app.use('/user', auth(), userRoute);
     app.use('/vacation', auth(), vacationRoute);    
     app.use('/salary', auth(), salaryRoute);
     app.use('/division', auth(), divisionRoute);
     app.use('/auth', authRoute);
+    app.use('/attendance', auth(), attendanceRoute);
 
     return app
 }
