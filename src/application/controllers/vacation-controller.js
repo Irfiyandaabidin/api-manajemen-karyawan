@@ -133,7 +133,7 @@ const deleteVacation = async (req, res) => {
   }
 
   try {
-    const doc = await Vacation.findByIdAndDelete(idEmployee);
+    const doc = await Vacation.findByIdAndDelete(idVacation);
     res.status(200).json({ 
       status: "success",
       message: "Vacation delete successfully"

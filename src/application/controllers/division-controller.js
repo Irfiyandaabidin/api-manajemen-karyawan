@@ -1,5 +1,11 @@
 const Division = require("../../models/Division");
-const { fetchDivision, getDivision, deleteDivision, updateDivision, addDivision } = require("../domain/divison.domain");
+const {
+  fetchDivision,
+  getDivision,
+  deleteDivision,
+  updateDivision,
+  addDivision,
+} = require("../domain/divison.domain");
 
 const create = async (req, res) => {
   const {
@@ -18,12 +24,8 @@ const create = async (req, res) => {
     head_division,
     budget,
   };
-  try {
-    const response = await addDivision(data);
-    res.status(response.status).send(response);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+  const response = await addDivision(data);
+  res.status(response.status).send(response);
 };
 
 const update = async (req, res) => {
@@ -44,43 +46,27 @@ const update = async (req, res) => {
     head_division,
     budget,
   };
-  try {
-    const response = await updateDivision(id, data);
-    res.status(response.status).send(response);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+  const response = await updateDivision(id, data);
+  res.status(response.status).send(response);
 };
 
 const destroy = async (req, res) => {
   const { id } = req.params;
 
-  try {
-    const response = await deleteDivision(id);
-    res.status(response.status).send(response)
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+  const response = await deleteDivision(id);
+  res.status(response.status).send(response);
 };
 
 const get = async (req, res) => {
-  try {
-    const response = await fetchDivision();
-    res.status(response.status).send(response);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+  const response = await fetchDivision();
+  res.status(response.status).send(response);
 };
 
 const getById = async (req, res) => {
   const { id } = req.params;
 
-  try {
-      const response = await getDivision(id);
-      res.status(response.status).send(response);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+  const response = await getDivision(id);
+  res.status(response.status).send(response);
 };
 
 module.exports = {

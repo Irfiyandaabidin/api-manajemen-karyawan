@@ -45,7 +45,7 @@ describe('/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
 
     });
     afterAll(async () => {
-        await deleteManyUsers();
+        // await deleteManyUsers();
     })
     describe('POST /user', () => {    
     

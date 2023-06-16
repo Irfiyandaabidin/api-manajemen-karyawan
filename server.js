@@ -7,6 +7,7 @@ const salaryRoute = require('./src/routes/salary-route');
 const authRoute = require('./src/routes/auth-route');
 const divisionRoute = require('./src/routes/division-route');
 const attendanceRoute = require('./src/routes/attendance-route');
+const reviewEmployeeRoute = require('./src/routes/employeeReview-route');
 const bodyParser = require('body-parser');
 const auth = require('./src/application/middleware/auth');
 require('dotenv').config();
@@ -33,6 +34,7 @@ function server() {
     app.use('/division', auth(), divisionRoute);
     app.use('/auth', authRoute);
     app.use('/attendance', auth(), attendanceRoute);
+    app.use('/employee-review', auth(), reviewEmployeeRoute)
 
     return app
 }

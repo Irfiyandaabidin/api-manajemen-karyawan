@@ -1,14 +1,15 @@
 const route = require('express').Router();
 const vacationController = require('../application/controllers/vacation-controller');
+const checkRole = require('../application/middleware/checkRole');
 
-route.post('/vacation', vacationController.createVacation);
+route.post('/', checkRole(['supervisor']), vacationController.createVacation);
 
-route.get('/vacation', vacationController.getAllVacations);
+route.get('/', vacationController.getAllVacations);
 
-route.get('/vacation/:id', vacationController.getVacationById);
+route.get('/:id', vacationController.getVacationById);
 
-route.put('/vacation/:id', vacationController.updateVacation);
+route.put('/:id', checkRole(['supervisor']),vacationController.updateVacation);
 
-route.delete('/vacation/:id', vacationController.deleteVacation);
+route.delete('/:id', checkRole(['supervisor']), vacationController.deleteVacation);
 
 module.exports = route;
