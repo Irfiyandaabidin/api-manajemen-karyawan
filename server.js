@@ -1,4 +1,3 @@
-const app = require('express')();
 const express = require('express');
 const mongoose = require('mongoose');
 const userRoute = require('./src/routes/user-route');
@@ -10,10 +9,20 @@ const attendanceRoute = require('./src/routes/attendance-route');
 const reviewEmployeeRoute = require('./src/routes/employeeReview-route');
 const bodyParser = require('body-parser');
 const auth = require('./src/application/middleware/auth');
+const yaml = require('js-yaml');
+const swaggerUi = require('swagger-ui-express');
+const fs = require('fs');
+const cors = require('cors');
 require('dotenv').config();
 
 
 function server() {
+    const app = express();
+    app.use(
+        cors({
+            origin: '*',
+        })
+    );
     const dbHost = process.env.DB_HOST;
     const dbPort = process.env.DB_PORT;
     const dbName = process.env.DB_NAME;
@@ -28,14 +37,18 @@ function server() {
             console.log(err)
         })
     
+    const swaggerDocument = yaml.load(
+        fs.readFileSync('./src/swagger/swagger.yaml', 'utf-8')
+    )
+
     app.use('/user', auth(), userRoute);
     app.use('/vacation', auth(), vacationRoute);    
     app.use('/salary', auth(), salaryRoute);
     app.use('/division', auth(), divisionRoute);
     app.use('/auth', authRoute);
     app.use('/attendance', auth(), attendanceRoute);
-    app.use('/employee-review', auth(), reviewEmployeeRoute)
-
+    app.use('/employee-review', auth(), reviewEmployeeRoute);
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     return app
 }
 

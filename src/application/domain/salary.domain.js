@@ -14,7 +14,43 @@ const transporterEmail = nodemailer.createTransport({
   }
 })
 
+async function fetchSalary() {
+  try {
+    const doc = await Salary.find();
+    return {
+      status: 200,
+      message: "Get salary successfully",
+      data: doc
+    }
+  } catch (err) {
+    return {
+      status: 500,
+      message: err.message
+    }
+  }
+}
+
+async function getSalary(id) {
+  try {
+    const doc = await Salary.findById(id);
+    if(!doc) {
+      return {
+        status: 404,
+        message: "Id not found."
+      }
+    }
+    return {
+      status: 200,
+      message: "Get salary successfully",
+      data: doc
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }
+}
+
 async function addSalary(data) {
+  try{
     const salary = new Salary(data);
     const user = await User.findById(data.employee_id);
     const userEmail = user.email;
@@ -57,8 +93,64 @@ async function addSalary(data) {
         message: "Salary added successfully",
         data: doc
     }
+  } catch (err) {
+    return {
+      status: 500,
+      message: err.message
+    }
+  }
 }
 
+async function deleteSalary(id) {
+  try {
+    const doc = await Salary.findByIdAndDelete(id);
+    if (!doc){
+      return {
+        status: 404,
+        message: "id not found." 
+      };
+    }
+    return { 
+      status: 200,
+      message: "Salary delete successfully."
+    }
+  } catch (err) {
+    return { 
+      status: 500,
+      message: err.message
+    };
+  }
+}
+
+async function updateSalary(id, data) {
+  try {
+    const doc = await Salary.findByIdAndUpdate(
+      id,
+      data,
+      { new: true }
+    )
+    if(doc) {
+      return {
+        status: 200,
+        message: "Salary updated successfully",
+        data: doc
+      }
+    }
+    return {
+      status: 404,
+      message: "Id not found."
+    }
+  } catch(err) {
+    return { 
+      status: 500,
+      message: err.message
+    };
+  }
+}
 module.exports = {
-    addSalary
+    addSalary,
+    fetchSalary,
+    getSalary,
+    deleteSalary,
+    updateSalary
 }
