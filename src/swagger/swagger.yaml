@@ -1,0 +1,292 @@
+swagger: "2.0"
+info:
+  title: Employee Management API
+  description: |
+    This API is designed to facilitate employee management in companies. It provides features such as employee management, salary management, leave management, and others. The API is built using Node.js technology and MongoDB database. This documentation will provide information about the available endpoints in this API and how to use them.
+  version: 1.0.0
+host: localhost:3000
+basepath: /
+schemes:
+  - http
+  - https
+securityDefinitions:
+  XAuthToken:
+    type: apiKey
+    name: x-auth-token
+    in: header
+    description: |
+      authentication token for x-auth-token header
+security:
+  - XAuthToken: []
+paths:
+  /user:
+    get:
+      summary: Return a list of user.
+      description: |
+        Returns a user with it's details.
+      tags:
+        - "Users"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    post:
+      summary: Create a new user.
+      produces:
+        - application/json
+      tags:
+        - "Users"
+      parameters:
+        - name: body
+          in: body
+          description: Data for creating a new user
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                example: johndoe@admin.com
+              password:
+                type: string
+                example: password
+              role:
+                type: string
+                example: employee
+              nik:
+                type: number
+                example: 123456
+              name:
+                type: string
+                example: John Doe
+              birth:
+                type: date
+                example: 1990-01-01
+              gender:
+                type: string
+                example: male
+              address:
+                type: string
+                example: 123 Main Street
+              phone:
+                type: string
+                example: 123-456-7890
+              entry_date:
+                type: date
+                example: 2021-01-01
+              image_profile:
+                type: string
+                example: profile.jpg
+      responses:
+        201:
+          description: OK
+  /user/{id}:
+    get:
+      summary: Return one of users.
+      description: |
+        Returns one user with it's details.
+      tags:
+        - "Users"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    put:
+      summary: Update one of user.
+      description: |
+        Update one user
+      tags:
+        - "Users"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - name: update user
+          in: body
+          required: true
+          description: Update user body request
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+              role:
+                type: string
+              nik:
+                type: number
+              name:
+                type: string
+              birth:
+                type: date
+              gender:
+                type: string
+              address:
+                type: string
+              phone:
+                type: string
+              entry_date:
+                type: date
+              image_profile:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    delete:
+      summary: Delete one of posts.
+      description: |
+        Delete one user
+      tags:
+        - "Users"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /salary:
+    get:
+      summary: Return a list of salary
+      description: |
+        Return a salary with it's details
+      tags:
+        - "Salary"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    post:
+      summary: Create new salary.
+      description: Create new salary and return salary data.
+      tags:
+        - "Salary"
+      parameters:
+        - name: create salary
+          in: body
+          required: true
+          description: Create salary body request
+          schema:
+            type: object
+            properties:
+              employee_id:
+                type: string
+                example: 609c8df5a7c5a2001bdc5b0e
+              month:
+                type: number
+                example: 5
+              year:
+                type: number
+                example: 2021
+              basic_salary:
+                type: number
+                example: 5000000
+              allowance:
+                type: number
+                example: 1000000
+              deduction:
+                type: number
+                example: 500000
+              total_salary:
+                type: number
+                example: 5500000
+              payment_status:
+                type: string
+                example: paid
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /salary/{id}:
+    get:
+      summary: Return one salary.
+      description: |
+        Return one salary with it's details
+      tags:
+        - "Salary"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    put:
+      summary: Update salary.
+      description: |
+        update one salary
+      tags:
+        - "Salary"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - name: update salary
+          in: body
+          required: true
+          description: Update salary body request
+          schema:
+            type: object
+            properties:
+              employee_id:
+                type: string
+              month:
+                type: number
+              year:
+                type: number
+              basic_salary:
+                type: number
+              allowance:
+                type: number
+              deduction:
+                type: number
+              total_salary:
+                type: number
+              payment_status:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    delete:
+      summary: Delete one salary
+      description: |
+        Delete on salary
+      tags:
+        - "Salary"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          
+
+              
+
+
