@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const reviewSchema = new mongoose.Schema({
-  employee_id: {
+  Reviewer_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true

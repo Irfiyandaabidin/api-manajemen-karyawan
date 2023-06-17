@@ -62,7 +62,7 @@ async function addDivision(data){
     return {
       status: 500,
       message: err.message
-    }
+    };
   }
 }
 
@@ -84,6 +84,7 @@ async function updateDivision(id, data){
     }
   }
 }
+
 module.exports = {
   fetchDivision,
   getDivision,

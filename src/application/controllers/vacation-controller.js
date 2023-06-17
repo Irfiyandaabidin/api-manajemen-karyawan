@@ -1,33 +1,11 @@
-const mongoose = require("mongoose");
 const Vacation = require('../../models/Vacation');
-const moment = require('moment')
-
-const getAllVacations = async (req, res) => {
-  try {
-    const doc = await Vacation.find();
-    res.status(200).json({
-      status: "success",
-      message: "Get vacation successfully",
-      data: doc
-    })
-  } catch (err) {
-    res.status(500).json({ message: err.message })
-  }
-};
-
-const getVacationById = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const doc = await Vacation.findById(id);
-    res.status(200).json({
-      status: "success",
-      message: "Get vacation successfully",
-      data: doc
-    })
-  } catch (err) {
-    res.status(500).json({ message: err.message })
-  }
-};
+const {
+  fetchVacation,
+  getVacation,
+  destroyVacation,
+  addVacation,
+  updVacation,
+} = require("../domain/vacation.domain");
 
 const createVacation = async (req, res) => {
   const {
@@ -40,30 +18,7 @@ const createVacation = async (req, res) => {
     duration,
     remaining, 
   } = req.body;
-  
-  try {
-    const currentYear = new Date().getFullYear();
-    const startOfYear = new Date(currentYear, 0, 1);
-    const endOfYear = new Date(currentYear, 11, 31);
-
-    const existingVacations = await Vacation.find({
-      employee_id,
-      start_date: { $gte: startOfYear, $lte: endOfYear },
-    });
-
-    const totalDuration = existingVacations.reduce((total, vacation) => {
-      return total + vacation.duration;
-    }, 0);
-
-    const remainingDays = 12 - totalDuration;
-
-    if (duration > remainingDays) {
-      return res.status(400).json({
-        message: `You can only request a maximum of ${remainingDays} days of vacation.`,
-      });
-    }
-
-    const newVacation = new Vacation({
+    const data = {
       employee_id,
       start_date,
       end_date,
@@ -72,18 +27,10 @@ const createVacation = async (req, res) => {
       type,
       duration,
       remaining,
-    });
-    await newVacation.save();
-    res.status(201).json({
-      status: "success",
-      message: "Vacation added successfully",
-      data: newVacation,
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+    };
+    const response = await addVacation(data);
+    res.status(response.status).send(response);
 };
-
 
 const updateVacation = async (req, res) => {
   const { id } = req.params;
@@ -97,8 +44,7 @@ const updateVacation = async (req, res) => {
     duration,
     remaining, 
   } = req.body;
-  try {
-    const newVacation = {
+    const data = {
     employee_id,
     start_date,
     end_date,
@@ -107,41 +53,29 @@ const updateVacation = async (req, res) => {
     type,
     duration,
     remaining, 
-    }
-    const doc = await Vacation.findByIdAndUpdate(
-      id,
-      newVacation,
-      { new: true }
-    )
-
-    res.status(200).json({
-      status: "success",
-      message: "Vacation updated successfully",
-      data: doc
-    })
-  } catch(err) {
-    console.log(err.message);
-    res.status(500).json({ message: err.message });
-  }
-}
+    };
+    const response = await updVacation(id, data);
+    res.status(response.status).send(response);
+  };
 
 const deleteVacation = async (req, res) => {
   const { id } = req.params;
-  const idVacation = await Vacation.findById(id);
-  if (!idVacation){
-    return res.status(400).json({ message: "id not found." });
-  }
+    
+      const response = await destroyVacation(id);
+        res.status(response.status).send(response);
+    };
 
-  try {
-    const doc = await Vacation.findByIdAndDelete(idVacation);
-    res.status(200).json({ 
-      status: "success",
-      message: "Vacation delete successfully"
-    })
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-}
+  const getAllVacations = async (req, res) => {
+  const response = await fetchVacation();
+    res.status(response.status).send(response);
+};
+
+const getVacationById = async (req, res) => {
+  const { id } = req.params;
+
+  const response = await getVacation(id);
+  res.status(response.status).send(response);
+};
 
 module.exports = {
   getAllVacations,
