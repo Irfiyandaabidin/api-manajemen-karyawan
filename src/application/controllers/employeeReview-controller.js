@@ -9,17 +9,19 @@ const {
 
 const createReview = async (req, res) => {
   const {
-    reviewer_id,
+    employee_id,
     review_date,
     review_content,
     review_score,
+    reviewer_id,
     reviewer_role
   } = req.body;
     const data = {
-      reviewer_id,
+      employee_id,
       review_date,
       review_content,
       review_score,
+      reviewer_id,
       reviewer_role
     };
     const response = await addReview(data);
@@ -29,17 +31,19 @@ const createReview = async (req, res) => {
 const updateReview = async (req, res) => {
   const { id } = req.params;
   const {
-    reviewer_id,
+    employee_id,
     review_date,
     review_content,
     review_score,
+    reviewer_id,
     reviewer_role,
   } = req.body;
     const data = {
-      reviewer_id,
+      employee_id,
       review_date,
       review_content,
       review_score,
+      reviewer_id,
       reviewer_role,
       };
       const response = await updReview(id, data);

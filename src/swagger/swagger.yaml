@@ -5,7 +5,7 @@ info:
     This API is designed to facilitate employee management in companies. It provides features such as employee management, salary management, leave management, and others. The API is built using Node.js technology and MongoDB database. This documentation will provide information about the available endpoints in this API and how to use them.
   version: 1.0.0
 host: localhost:3000
-basepath: /
+basePath: /
 schemes:
   - http
   - https
@@ -61,7 +61,8 @@ paths:
                 type: string
                 example: John Doe
               birth:
-                type: date
+                type: string
+                format: date
                 example: 1990-01-01
               gender:
                 type: string
@@ -73,7 +74,8 @@ paths:
                 type: string
                 example: 123-456-7890
               entry_date:
-                type: date
+                type: string
+                format: date
                 example: 2021-01-01
               image_profile:
                 type: string
@@ -127,7 +129,8 @@ paths:
               name:
                 type: string
               birth:
-                type: date
+                type: string
+                format: date
               gender:
                 type: string
               address:
@@ -135,7 +138,8 @@ paths:
               phone:
                 type: string
               entry_date:
-                type: date
+                type: string
+                format: date
               image_profile:
                 type: string
       produces:
@@ -285,8 +289,358 @@ paths:
       responses:
         200:
           description: OK
-          
-
-              
-
-
+  /Vacation:
+    get:
+      summary: "Return a list of vacations"
+      description: "Return a vacation with its details"
+      tags:
+        - "Vacation"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+    post:
+      summary: "Create new vacation"
+      description: "Create new vacation and return vacation data"
+      tags:
+        - "Vacation"
+      parameters:
+        - name: "create vacation"
+          in: "body"
+          required: true
+          description: "Create vacation body request"
+          schema:
+            type: "object"
+            properties:
+              employee_id:
+                type: "string"
+                example: "609c8df5a7c5a2001bdc5b0e"
+              start_date:
+                type: "string"
+                format: "date"
+                example: "2023-06-10"
+              end_date:
+                type: "string"
+                format: "date"
+                example: "2023-06-17"
+              description:
+                type: "string"
+                example: "urgent vacation"
+              status:
+                type: "string"
+                example: "approved"
+              type:
+                type: "string"
+                example: "urgent"
+              duration:
+                type: "number"
+                example: 5
+              remaining:
+                type: "number"
+                example: 7
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+  /vacation/{id}:
+    get:
+      summary: "Return one vacation"
+      description: "Return one vacation with its details"
+      tags:
+        - "Vacation"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+    put:
+      summary: "Update vacation"
+      description: "Update one vacation"
+      tags:
+        - "Vacation"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+        - name: "update vacation"
+          in: "body"
+          required: true
+          description: "Update vacation body request"
+          schema:
+            type: "object"
+            properties:
+              employee_id:
+                type: "string"
+              start_date:
+                type: "string"
+                format: "date"
+              end_date:
+                type: "string"
+                format: "date"
+              description:
+                type: "string"
+              status:
+                type: "string"
+              type:
+                type: "string"
+              duration:
+                type: "number"
+              remaining:
+                type: "number"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+    delete:
+      summary: "Delete one vacation"
+      description: "Delete one vacation"
+      tags:
+        - "Vacation"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+  /employee-review:
+    get:
+      summary: "Return a list of employee reviews"
+      description: "Return an employee review with its details"
+      tags:
+        - "Employee-review"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+    post:
+      summary: "Create new employee review"
+      description: "Create new employee review and return employee review data"
+      tags:
+        - "Employee-review"
+      parameters:
+        - name: "create employee review"
+          in: "body"
+          required: true
+          description: "Create employee review body request"
+          schema:
+            type: "object"
+            properties:
+              employee_id:
+                type: "string"
+                example: "609c8df5a7c5a2001bdc5b0e"
+              review_date:
+                type: "string"
+                format: "date"
+                example: "2023-06-10"
+              review_content:
+                type: "string"
+                example: "good employee with discipline time"
+              review_score:
+                type: "number"
+                example: 87
+              reviewer_id:
+                type: "string"
+                example: "609c8df5a7c5a2001bdc5b0e"
+              reviewer_role:
+                type: "string"
+                example: "supervisor"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+  
+  /employee-review/{id}:
+    get:
+      summary: "Return one employee review"
+      description: "Return one employee review with its details"
+      tags:
+        - "Employee-review"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+    put:
+      summary: "Update employee review"
+      description: "Update employee review"
+      tags:
+        - "Employee-review"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+        - name: "update employee review"
+          in: "body"
+          required: true
+          description: "Update employee review body request"
+          schema:
+            type: "object"
+            properties:
+              employee_id:
+                type: "string"
+              review_date:
+                type: "string"
+                format: "date"
+              review_content:
+                type: "string"
+              review_score:
+                type: "number"
+              reviewer_id:
+                type: "string"
+              reviewer_role:
+                type: "string"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+    delete:
+      summary: "Delete one employee review"
+      description: "Delete one employee review"
+      tags:
+        - "Employee-review"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+  /division:
+    get:
+      summary: "Return a list of divisions"
+      description: "Return a division with its details"
+      tags:
+        - "Division"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+    post:
+      summary: "Create new division"
+      description: "Create new division and return division data"
+      tags:
+        - "Division"
+      parameters:
+        - name: "create division"
+          in: "body"
+          required: true
+          description: "Create division body request"
+          schema:
+            type: "object"
+            properties:
+              division_name:
+                type: "string"
+                example: "john"
+              description:
+                type: "string"
+                example: "server service"
+              employees:
+                type: "string"
+                example: "609c8df5a7c5a2001bdc5b0e"
+              start_date:
+                type: "string"
+                format: "date"
+                example: "2023-04-10"
+              head_division:
+                type: "string"
+                example: "609c8df5a7c5a2001bdc5b0e"
+              budget:
+                type: "number"
+                example: 20
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+  /division/{id}:
+    get:
+      summary: "Return one division"
+      description: "Return one division with its details"
+      tags:
+        - "Division"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+    put:
+      summary: "Update division"
+      description: "Update one division"
+      tags:
+        - "Division"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+        - name: "update division"
+          in: "body"
+          required: true
+          description: "Update division body request"
+          schema:
+            type: "object"
+            properties:
+              division_name:
+                type: "string"
+              description:
+                type: "string"
+              employees:
+                type: "string"
+              start_date:
+                type: "string"
+                format: "date"
+              head_division:
+                type: "string"
+              budget:
+                type: "number"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+    delete:
+      summary: "Delete one division"
+      description: "Delete one division"
+      tags:
+        - "Division"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"

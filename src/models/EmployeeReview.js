@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const reviewSchema = new mongoose.Schema({
-  Reviewer_id: {
+  employee_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
@@ -16,6 +16,11 @@ const reviewSchema = new mongoose.Schema({
   },
   review_score: {
     type: Number,
+    required: true
+  },
+  reviewer_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true
   },
   reviewer_role: {
