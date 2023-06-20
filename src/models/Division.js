@@ -12,7 +12,7 @@ const divisionSchema = new mongoose.Schema({
   employees: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'User',
-    required: true
+    required: true,
   },
   start_date: {
     type: Date,

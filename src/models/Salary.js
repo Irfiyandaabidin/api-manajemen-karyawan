@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const salarySchema = new mongoose.Schema({
     employee_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Employee',
-        required: true
+        ref: 'User',
+        required: true,
     },
     month: {
         type: Number,

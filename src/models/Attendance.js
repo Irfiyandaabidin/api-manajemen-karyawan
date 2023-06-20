@@ -5,7 +5,7 @@ const attendanceSchema = new mongoose.Schema({
     employee_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        required: true,
     },
     date: {
         type: Date,
