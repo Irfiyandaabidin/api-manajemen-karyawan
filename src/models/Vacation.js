@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const vacationSchema = new mongoose.Schema({
     employee_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Employee',
+        ref: 'User',
         required: true
     },
     start_date: {
@@ -19,7 +19,9 @@ const vacationSchema = new mongoose.Schema({
         required: true
     },
     status: {
-        type: Boolean,
+        type: String,
+        enum: ["await", "approved", "canceled"],
+        default: "await",
         required: true
     },
     type: {
@@ -37,4 +39,5 @@ const vacationSchema = new mongoose.Schema({
 });
 
 const Vacation = mongoose.model('Vacation', vacationSchema);
+
 module.exports = Vacation;
