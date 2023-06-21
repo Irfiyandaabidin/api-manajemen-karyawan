@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
-const User = require('../../models/User');
-const bcrypt = require('bcryptjs');
+const User = require("../../models/User");
+const bcrypt = require("bcryptjs");
+const { addUser, fetchUser, getUser, updateUser, deleteUser } = require("../domain/user.domain")
 
 const create = async (req, res) => {
   const {
@@ -16,65 +17,38 @@ const create = async (req, res) => {
     entry_date,
     image_profile,
   } = req.body;
-  try {
-    const newUser = new User({
-      email,
-      password,
-      role,
-      nik,
-      name,
-      birth,
-      gender,
-      address,
-      phone,
-      entry_date,
-      image_profile,
-    });
-    const salt = await bcrypt.genSalt(10);
-    newUser.password = await bcrypt.hash(password, salt);
-    await newUser.save();
-    newUser.password = undefined
-    res.status(201).json({
-      status: "success",
-      message: "User added successfully",
-      data: newUser
-    })
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+  const data = {
+    email,
+    password,
+    role,
+    nik,
+    name,
+    birth,
+    gender,
+    address,
+    phone,
+    entry_date,
+    image_profile,
+  };
+  const response = await addUser(data);
+  res.status(response.status).send(response);
 };
 
 const getAll = async (req, res) => {
-  try {
-    const doc = await User.find();
-    res.status(200).json({
-      status: "success",
-      message: "Get user successfully",
-      data: doc
-    })
-  } catch (err) {
-    res.status(500).json({ message: err.message })
-  }
+  const response = await fetchUser();
+  res.status(response.status).send(response);
 };
 
 const get = async (req, res) => {
   const { id } = req.params;
-  try {
-    const doc = await User.findById(id);
-    res.status(200).json({
-      status: "success",
-      message: "Get user successfully",
-      data: doc
-    })
-  } catch (err) {
-    res.status(500).json({ message: err.message })
-  }
+  const response = await getUser(id);
+  res.status(response.status).send(response);
 };
 
 const update = async (req, res) => {
   const { id } = req.params;
-  const idUser = req.user.id
-  const {role} = req.user;
+  const idUser = req.user.id;
+  const { role } = req.user;
   const {
     email,
     password,
@@ -87,63 +61,33 @@ const update = async (req, res) => {
     entry_date,
     image_profile,
   } = req.body;
-  try {
-    if (idUser === id){
-      const newUser = {
-        email,
-        password,
-        role,
-        nik,
-        name,
-        birth,
-        gender,
-        address,
-        phone,
-        entry_date,
-        image_profile,
-      }
-      const doc = await User.findByIdAndUpdate(
-        id,
-        newUser,
-        { new: true }
-      )
-  
-      return res.status(200).json({
-        status: "success",
-        message: "User updated successfully",
-        data: doc
-      })
-    }
-    res.status(403).json({
-      message: "Access Denied, Only user can update."
-    })
-  } catch(err) {
-    res.status(500).json({ message: err.message });
+  const data = {
+    email,
+    password,
+    role,
+    nik,
+    name,
+    birth,
+    gender,
+    address,
+    phone,
+    entry_date,
+    image_profile,
   }
-}
+  const response = await updateUser(id, idUser, data);
+  res.status(response.status).send(response);
+};
 
 const destroy = async (req, res) => {
   const { id } = req.params;
-  const idUser = await User.findById(id);
-  if (!idUser){
-    return res.status(400).json({ message: "id not found." });
-  }
-
-  try {
-    const doc = await User.findByIdAndDelete(idUser);
-    res.status(200).json({ 
-      status: "success",
-      message: "User delete successfully"
-    })
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-}
+  const response = await deleteUser(id);
+  res.status(response.status).send(response);
+};
 
 module.exports = {
   getAll,
   get,
   create,
   update,
-  destroy
+  destroy,
 };

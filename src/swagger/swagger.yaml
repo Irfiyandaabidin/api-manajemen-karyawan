@@ -62,6 +62,7 @@ paths:
           description: OK
     post:
       summary: Create a new user.
+      description: Create new user and return user data and only the HR role can access.
       produces:
         - application/json
       tags:
@@ -85,7 +86,7 @@ paths:
                 example: employee
               nik:
                 type: number
-                example: 123456
+                example: 1234566474736353
               name:
                 type: string
                 example: John Doe
@@ -179,7 +180,7 @@ paths:
     delete:
       summary: Delete one of posts.
       description: |
-        Delete one user
+        Delete one user and only the HR role can access.
       tags:
         - "Users"
       parameters:
@@ -208,7 +209,7 @@ paths:
           description: OK
     post:
       summary: Create new salary.
-      description: Create new salary and return salary data.
+      description: Create new salary and return salary data and only the HR role can access.
       tags:
         - "Salary"
       parameters:
@@ -268,7 +269,7 @@ paths:
     put:
       summary: Update salary.
       description: |
-        update one salary
+        update one salary and only the HR role can access.
       tags:
         - "Salary"
       parameters:
@@ -307,7 +308,7 @@ paths:
     delete:
       summary: Delete one salary
       description: |
-        Delete on salary
+        Delete on salary and only the HR role can access.
       tags:
         - "Salary"
       parameters:
@@ -335,7 +336,7 @@ paths:
           description: "OK"
     post:
       summary: "Create new vacation"
-      description: "Create new vacation and return vacation data"
+      description: "Create new vacation and return vacation data and only the Supervisor role can access."
       tags:
         - "Vacation"
       parameters:
@@ -395,7 +396,7 @@ paths:
           description: "OK"
     put:
       summary: "Update vacation"
-      description: "Update one vacation"
+      description: "Update one vacation and only the Supervisor role can access."
       tags:
         - "Vacation"
       parameters:
@@ -435,7 +436,7 @@ paths:
           description: "OK"
     delete:
       summary: "Delete one vacation"
-      description: "Delete one vacation"
+      description: "Delete one vacation and only the Supervisor role can access."
       tags:
         - "Vacation"
       parameters:
@@ -463,7 +464,7 @@ paths:
           description: "OK"
     post:
       summary: "Create new employee review"
-      description: "Create new employee review and return employee review data"
+      description: "Create new employee review and only the Supervisor role can access."
       tags:
         - "Employee-review"
       parameters:
@@ -516,7 +517,7 @@ paths:
           description: "OK"
     put:
       summary: "Update employee review"
-      description: "Update employee review"
+      description: "Update employee review and only the Supervisor role can access."
       tags:
         - "Employee-review"
       parameters:
@@ -551,7 +552,7 @@ paths:
           description: "OK"
     delete:
       summary: "Delete one employee review"
-      description: "Delete one employee review"
+      description: "Delete one employee review and only the Supervisor role can access."
       tags:
         - "Employee-review"
       parameters:
@@ -579,7 +580,7 @@ paths:
           description: "OK"
     post:
       summary: "Create new division"
-      description: "Create new division and return division data"
+      description: "Create new division and only the HR role can access."
       tags:
         - "Division"
       parameters:
@@ -632,7 +633,7 @@ paths:
           description: "OK"
     put:
       summary: "Update division"
-      description: "Update one division"
+      description: "Update one division and only the HR role can access."
       tags:
         - "Division"
       parameters:
@@ -667,7 +668,7 @@ paths:
           description: "OK"
     delete:
       summary: "Delete one division"
-      description: "Delete one division"
+      description: "Delete one division and only the HR role can access"
       tags:
         - "Division"
       parameters:
@@ -685,7 +686,7 @@ paths:
   /attendance:
     post:
       summary: "Create 'time in' of attendance"
-      description: "Create 'time in' of attendance with user id is login"
+      description: "Create 'time in' of attendance with user id is login and only the Employee role can access."
       tags:
         - "Attendance"
       responses:
@@ -693,7 +694,7 @@ paths:
           description: "OK"
     put:
       summary: "Update 'time out' of attendance"
-      description: "Update 'time out' of attendance with user id is login"
+      description: "Update 'time out' of attendance with user id is login and only the Employee role can access"
       tags:
         - "Attendance"
       responses:
@@ -710,7 +711,7 @@ paths:
   /attendance/{id}:
     delete:
       summary: "Delete one attendance employee"
-      description: "Delete one attendance employee, accessible only supervisor role"
+      description: "Delete one attendance employee and only the supervisor role can access"
       tags:
         - "Attendance"
       parameters:

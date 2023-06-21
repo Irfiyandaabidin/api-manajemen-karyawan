@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for api-manajemen-karyawan/src/models/Vacation.js</title>
+    <title>Code coverage report for api-manajemen-karyawan/src/models/EmployeeReview.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">api-manajemen-karyawan/src/models</a> Vacation.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">api-manajemen-karyawan/src/models</a> EmployeeReview.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -97,25 +97,9 @@
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a>
-<a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a>
-<a name='L38'></a><a href='#L38'>38</a>
-<a name='L39'></a><a href='#L39'>39</a>
-<a name='L40'></a><a href='#L40'>40</a>
-<a name='L41'></a><a href='#L41'>41</a>
-<a name='L42'></a><a href='#L42'>42</a>
-<a name='L43'></a><a href='#L43'>43</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L35'></a><a href='#L35'>35</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -149,47 +133,39 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">const mongoose = require('mongoose');
 &nbsp;
-const vacationSchema = new mongoose.Schema({
-    employee_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    },
-    start_date: {
-        type: Date,
-        required: true
-    },
-    end_date: {
-        type: Date,
-        required: true
-    },
-    description: {
-        type: String,
-        required: true
-    },
-    status: {
-        type: String,
-        enum: ["await", "approved", "canceled"],
-        default: "await",
-        required: true
-    },
-    type: {
-        type: String,
-        required: true
-    },
-    duration: {
-        type: Number,
-        required: true
-    },
-    remaining: {
-        type: Number,
-        required: true
-    },
+const reviewSchema = new mongoose.Schema({
+  employee_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  review_date: {
+    type: Date,
+    required: true
+  },
+  review_content: {
+    type: String,
+    required: true
+  },
+  review_score: {
+    type: Number,
+    required: true
+  },
+  reviewer_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  reviewer_role: {
+    type: String,
+    ref: 'User',
+    required: true
+  }
 });
 &nbsp;
-const Vacation = mongoose.model('Vacation', vacationSchema);
+const Review = mongoose.model('Review', reviewSchema);
 &nbsp;
-module.exports = Vacation;</pre></td></tr></table></pre>
+module.exports = Review;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

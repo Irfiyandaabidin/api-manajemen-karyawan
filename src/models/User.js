@@ -17,6 +17,9 @@ const userSchema = new mongoose.Schema({
   },
   nik: {
     type: Number,
+    minlength: 16,
+    maxlength: 16,
+    unique: true
   },
   name: {
     type: String,
