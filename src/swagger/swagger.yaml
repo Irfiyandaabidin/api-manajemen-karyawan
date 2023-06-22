@@ -86,7 +86,7 @@ paths:
                 example: employee
               nik:
                 type: number
-                example: 123456
+                example: 1234566474736353
               name:
                 type: string
                 example: John Doe
