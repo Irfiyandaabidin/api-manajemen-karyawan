@@ -23,7 +23,7 @@ async function getUser(id) {
     }
     return {
       status: 200,
-      message: "Get User successfully.",
+      message: "Get User successfully",
       data: doc
     };
   } catch (err) {

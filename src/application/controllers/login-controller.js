@@ -8,6 +8,9 @@ require('dotenv').config();
 const jwtSecret = process.env.JWT_SECRET;
 
 module.exports = async (req, res) => {
+    await check('email', 'Email is required').notEmpty().run(req);
+    await check('email', 'Please include a valid email').isEmail().run(req);
+    await check('password', 'Password is required').notEmpty().run(req);
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
         return res.status(400)
@@ -43,7 +46,6 @@ module.exports = async (req, res) => {
             }
         )
     } catch (err) {
-        console.error(err.message);
         res.status(500).json({ message: "Server error" });
     }
 }

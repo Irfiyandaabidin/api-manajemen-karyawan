@@ -1,4 +1,5 @@
 const Review = require('../../models/EmployeeReview');
+const User = require('../../models/User');
 
 async function fetchReview() {
     try{
@@ -51,13 +52,20 @@ async function destroyReview(id){
 
 async function addReview(data){
     try {
-        const review = new Review(data);
-        const doc = await review.save({ new: true });
+        const user = await User.findById(data.employee_id);
+        if(user){
+            const review = new Review(data);
+            const doc = await review.save({ new: true });
+            return {
+                status: 201,
+                message: "Review added successfully",
+                data: doc,
+            };
+        }
         return {
-            status: 201,
-            message: "Review added successfully",
-            data: doc,
-        };
+            status: 404,
+            message: "Id employee not found"
+        }
     } catch (err) {
         return {
             status: 500,
