@@ -18,6 +18,7 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
   let supervisorToken;
   let employeeToken;
   let tokens = [];
+  let employee_id;
 
   beforeAll(async () => {
     await mongoose.connect(process.env.URI_TEST, {
@@ -46,10 +47,7 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
       password: "password123",
     });
     supervisorToken = loginSupervisor.body.token;
-    tokens = [employeeToken, hrToken];
-  });
-  afterAll(async () => {
-    // await deleteManyUsers();
+    tokens = [hrToken, employeeToken];
   });
 
   // user integration test
@@ -91,6 +89,7 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
       expect(res.body.data.phone).toBe("987-654-3210");
       expect(res.body.data.entry_date.slice(0, 10)).toBe("2021-02-01");
       expect(res.body.data.image_profile).toBe("profile2.jpg");
+      employee_id = res.body.data._id
     });
   });
 
@@ -116,5 +115,45 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
         expect(res.body.data).toHaveLength(4);
       }
     });
+  });
+
+  describe('GET /user/:id', () => {
+    it("should return 200 if data exists and login successfull", async () => {
+      for (let i = 0; i < tokens.length; i++) {
+        const res = await supertest(app)
+          .get(`/user/${employee_id}`)
+          .set("x-auth-token", tokens[i]);
+      expect(res.body.message).toBe("Get User successfully");
+      expect(res.status).toBe(200);
+      expect(res.body.data.email).toBe("janedoe@admin.com");
+      expect(res.body.data.role).toBe("employee",);
+      expect(res.body.data.nik).toBe(1234567890123456);
+      expect(res.body.data.name).toBe("Jane Doe");
+      expect(res.body.data.birth.slice(0, 10)).toBe("1992-05-10");
+      expect(res.body.data.gender).toBe("female");
+      expect(res.body.data.address).toBe("456 Oak Avenue");
+      expect(res.body.data.phone).toBe("987-654-3210");
+      expect(res.body.data.entry_date.slice(0, 10)).toBe("2021-02-01");
+      expect(res.body.data.image_profile).toBe("profile2.jpg");
+      }
+    })
+
+    it("should return 401 if user is not logged in", async () => {
+      const res = await supertest(app).get("/user");
+      expect(res.statusCode).toEqual(401);
+    });
+
+    it("should return 401 if token is invalid", async () => {
+      const res = await supertest(app)
+        .get("/user")
+        .set("x-auth-token", "invalid_token");
+      expect(res.statusCode).toEqual(401);
+    });
+  })
+
+  
+  afterAll(async () => {
+    await deleteManyUsers();
+    await mongoose.disconnect();
   });
 });
