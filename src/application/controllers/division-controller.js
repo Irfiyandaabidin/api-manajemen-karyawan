@@ -5,7 +5,7 @@ const {
   deleteDivision,
   updateDivision,
   addDivision,
-} = require("../domain/divison.domain");
+} = require("../domain/division.domain");
 
 const create = async (req, res) => {
   const {
