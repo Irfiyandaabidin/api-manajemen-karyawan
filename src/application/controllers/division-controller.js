@@ -5,7 +5,7 @@ const {
   deleteDivision,
   updateDivision,
   addDivision,
-} = require("../domain/divison.domain");
+} = require("../domain/division.domain");
 const { check, validationResult } = require('express-validator');
 
 const create = async (req, res) => {
