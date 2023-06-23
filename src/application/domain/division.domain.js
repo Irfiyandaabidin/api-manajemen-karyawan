@@ -1,6 +1,7 @@
 const Division = require("../../models/Division");
 const User = require("../../models/User");
 
+
 async function fetchDivision() {
   try {
     const data = await Division.find({});
