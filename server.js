@@ -23,13 +23,15 @@ function server() {
             origin: '*',
         })
     );
+    const dbUsername = process.env.DB_USERNAME;
+    const dbPassword = process.env.DB_PASSWORD;
     const dbHost = process.env.DB_HOST;
     const dbPort = process.env.DB_PORT;
     const dbName = process.env.DB_NAME;
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
     
-    mongoose.connect(`mongodb://${dbHost}:${dbPort}/${dbName}`, { useNewUrlParser: true })
+    mongoose.connect(`mongodb://${dbUsername}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`, { useNewUrlParser: true })
         .then(() => {
             console.log('Database connected');
         })

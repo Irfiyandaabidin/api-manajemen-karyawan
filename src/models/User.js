@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     type: Number,
     minlength: 16,
     maxlength: 16,
-    unique: true
+    unique: true,
   },
   name: {
     type: String,

@@ -20,6 +20,12 @@ async function fetchAttendance() {
 async function getAttendance(id) {
     try {
         const doc = await Attendance.findById(id);
+        if(!doc){
+            return {
+                status: 404,
+                message: "Id not found"
+            }
+        }
         return {
             status: 200,
             message: "Get attendance successfully",
@@ -58,18 +64,18 @@ async function addAttendance(data) {
             const doc = await attendance.save({ new: true });
             return {
                 status: 201,
-                message: "Attendance added successfully.",
+                message: "Attendance added successfully",
                 data: doc,
             }
         }
         return { 
             status: 400,
-            message: "You have already checked in today."
+            message: "You have already checked in today"
         } 
     } catch (err) {
         return { 
             status: 500,
-            error: err.message
+            message: err.message
         }
     }
 }
@@ -81,8 +87,9 @@ async function updateAttendance(id) {
         if(attendance){
             const doc = await Attendance.findOneAndUpdate(attendance._id, {
                 employee_id: id,
+                date: attendance.date,
                 time_in: attendance.time_in,
-                status: "Done",
+                status: "completed",
                 time_out: moment().format('h:mm:ss')
             }, { new: true })
             return {
@@ -92,26 +99,25 @@ async function updateAttendance(id) {
             }
         } return { 
             status: 400, 
-            message: "Employee has not clocked in."
+            message: "Employee has not clocked in"
         }
     } catch (err) {
         return { 
             status: 500, 
-            error: err.message
+            message: err.message
         }
     }
 }
 
 async function deleteAttendance(id) {
     try {
-        const idAttendance = await Attendance.findById(id);
-        if(!idAttendance) {
+        const doc = await Attendance.findByIdAndDelete(id);
+        if(!doc) {
             return { 
                 status:404,
-                message: "id not found." 
+                message: "Id not found" 
             };
         }
-        const doc = await Attendance.findByIdAndDelete(idAttendance);
         return {
             status: 200,
             message: "Attendance delete successfully"

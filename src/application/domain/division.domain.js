@@ -1,4 +1,6 @@
 const Division = require("../../models/Division");
+const User = require("../../models/User");
+
 
 async function fetchDivision() {
   try {
@@ -52,12 +54,21 @@ async function deleteDivision(id){
 async function addDivision(data){
   try{
     const division = new Division(data);
-    const doc = await division.save({ new: true });
+    const employeePromises = data.employees.map(id => User.findById(id));
+    const employees = await Promise.all(employeePromises);
+    const head_division = await User.findById(data.head_division);
+    if(employees.every(employee => employee) && head_division){
+      const doc = await division.save({ new: true });
+      return {
+        status: 201,
+        message: "Division added successfully",
+        data: doc,
+      };
+    }
     return {
-      status: 201,
-      message: "Division added successfully",
-      data: doc,
-    };
+      status: 400,
+      message: "Employee or head division not found in user collection"
+    }
   } catch (err){
     return {
       status: 500,
@@ -68,14 +79,23 @@ async function addDivision(data){
 
 async function updateDivision(id, data){
   try {
-    const doc = await Division.findByIdAndUpdate(id, data, { new: true });
-    if (!doc) {
-      return { status:400, message: "Division not found" };
+    const employeePromises = data.employees.map(id => User.findById(id));
+    const employees = await Promise.all(employeePromises);
+    const head_division = await User.findById(data.head_division);
+    if(employees.every(employee => employee) && head_division){
+      const doc = await Division.findByIdAndUpdate(id, data, { new: true });
+      if (!doc) {
+        return { status:400, message: "Division not found" };
+      }
+      return {
+        status: 200,
+        message: "Division updated successfully",
+        data: doc,
+      }
     }
     return {
-      status: 200,
-      message: "Division updated successfully",
-      data: doc,
+      status: 400,
+      message: "Employee or head division not found in user collection"
     }
   } catch (err) {
     return {
