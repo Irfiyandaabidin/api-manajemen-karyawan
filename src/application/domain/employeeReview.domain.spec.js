@@ -1,4 +1,7 @@
+const { reviews } = require('../../../tests/fixtures/employeeReviews');
+const { users } = require('../../../tests/fixtures/users');
 const Review = require('../../models/EmployeeReview');
+const User = require('../../models/User');
 const {
   fetchReview,
   getReview,
@@ -122,19 +125,19 @@ describe('destroyReview()', () => {
 
 describe('addReview()', () => {
   it('should add a new review', async () => {
-    const data = { title: 'New Review' };
-    const review = { _id: '1', title: 'New Review' };
-
-    Review.mockImplementationOnce(() => {
-      return { save: jest.fn().mockResolvedValue(review) };
-    });
-
-    const response = await addReview(data);
-
-    expect(Review).toHaveBeenCalledWith(data);
-    expect(response.status).toBe(201);
-    expect(response.message).toBe('Review added successfully');
-    expect(response.data).toEqual(review);
+    const user = users[0];
+    const review = reviews[0]
+    const userSpy = jest
+      .spyOn(User, "findById")
+      .mockResolvedValue(user);
+    const reviewSpy = jest
+      .spyOn(Review.prototype, "save")
+      .mockResolvedValue(review)
+    const result = await addReview(review)
+    expect(userSpy).toHaveBeenCalledWith(review.employee_id);
+    expect(reviewSpy).toHaveBeenCalledWith({new: true});
+    expect(result.status).toBe(201);
+    expect(result.message).toBe("Review added successfully");
   });
 
   it('should return an error message if adding a review fails', async () => {

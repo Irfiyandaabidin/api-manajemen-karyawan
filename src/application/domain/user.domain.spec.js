@@ -164,7 +164,7 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/application/domai
       const result = await updateUser(id, idUser, data);
 
       expect(result.status).toBe(403);
-      expect(result.message).toBe("Access Denied, Only user can update.");
+      expect(result.message).toBe("Access Denied, Only user can update");
     });
 
     it("should return error message", async () => {

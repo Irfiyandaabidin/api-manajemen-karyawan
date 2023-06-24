@@ -1,8 +1,6 @@
 const Salary = require("../../src/models/Salary");
 const salaries = [
     {
-
-        _id: "12ab34cd56ef7890fe1d2c3b",
         employee_id: '12ab34cd56ef7890fe1d2c3b',
         month: 1,
         year: 2021,
@@ -13,7 +11,6 @@ const salaries = [
         payment_status: 'unpaid',
     },
     {
-        _id: "f00dcafebadb002a5e7f1c3d",
         employee_id: '60d2b7e9c5d4fe41f0a0f4b5',
         month: 2,
         year: 2021,
@@ -24,7 +21,6 @@ const salaries = [
         payment_status: 'unpaid',
     },
     {
-        _id: "1a2b3c4d5e6f7a8b9c0d1e2f",
         employee_id: '60d2b7e9c5d4fe41f0a0f4b6',
         month: 1,
         year: 2021,
@@ -35,7 +31,6 @@ const salaries = [
         payment_status: 'unpaid',
     },
     {
-        _id: "deadc0dedeadc0dedeadc0de",
         employee_id: '60d2b7e9c5d4fe41f0a0f4b6',
         month: 2,
         year: 2021,
@@ -46,7 +41,6 @@ const salaries = [
         payment_status: 'unpaid',
     },
     {
-        _id: "1a2b3c4d5e6a758b9c2d1e2f",
         employee_id: '60d2b7e9c5d4fe41f0a0f4b7',
         month: 1,
         year: 2021,
@@ -58,6 +52,16 @@ const salaries = [
     },
 ];
 
+const insertManySalary = async () => {
+    return await Salary.insertMany(salaries);
+}
+
+async function deleteManySalary() {
+    await Salary.deleteMany({});
+}
+
 module.exports = {
-    salaries
+    salaries,
+    insertManySalary,
+    deleteManySalary
 }

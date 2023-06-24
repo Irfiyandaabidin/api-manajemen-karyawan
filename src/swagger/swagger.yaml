@@ -488,12 +488,6 @@ paths:
               review_score:
                 type: "number"
                 example: 87
-              reviewer_id:
-                type: "string"
-                example: "609c8df5a7c5a2001bdc5b0e"
-              reviewer_role:
-                type: "string"
-                example: "supervisor"
       produces:
         - "application/json"
       responses:

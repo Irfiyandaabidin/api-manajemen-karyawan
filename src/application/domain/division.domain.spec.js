@@ -1,4 +1,6 @@
+const { divisions } = require("../../../tests/fixtures/divisions");
 const Division = require("../../models/Division");
+const User = require("../../models/User");
 const {
   fetchDivision,
   getDivision,
@@ -120,79 +122,97 @@ describe("deleteDivision()", () => {
   });
 });
 
-describe("addDivision()", () => {
-  it("should add a new division", async () => {
-    const data = { name: "New Division" };
-    const division = { _id: "1", name: "New Division" };
-
-    Division.mockImplementationOnce(() => {
-      return { save: jest.fn().mockResolvedValue(division) };
-    });
-
-    const response = await addDivision(data);
-
-    expect(Division).toHaveBeenCalledWith(data);
-    expect(response.status).toBe(201);
-    expect(response.message).toBe("Division added successfully");
-    expect(response.data).toEqual(division);
+describe('addDivision()', () => {
+  it('should return status 201 if all employees and head division are found', async () => {
+    const data = divisions[0];
+    jest.spyOn(User, 'findById').mockResolvedValue({});
+    jest.spyOn(Division.prototype, 'save').mockResolvedValue(data);
+    const result = await addDivision(data);
+    expect(result.status).toBe(201);
+    expect(result.message).toBe('Division added successfully');
+    User.findById.mockRestore();
   });
 
-  it("should return an error message if adding a division fails", async () => {
-    const data = { name: "New Division" };
-    const errorMessage = "Failed to add division";
+  it('should return status 400 if any employee or head division is not found', async () => {
+    const data = divisions[0]
+    jest.spyOn(User, 'findById').mockResolvedValue(null);
+    const result = await addDivision(data);
+    expect(result.status).toBe(400);
+    expect(result.message).toBe('Employee or head division not found in user collection');
+    expect(result.data).toBeUndefined();
+  });
 
-    Division.mockImplementationOnce(() => {
-      return { save: jest.fn().mockRejectedValue(new Error(errorMessage)) };
-    });
+  it('should return status 500 if an error occurs', async () => {
+    const errorMessage = "Database error"
+    jest.spyOn(User, "findById").mockResolvedValue({});
+    jest.spyOn(Division.prototype, "save").mockRejectedValue(new Error(errorMessage));
+    const result = await addDivision(divisions[0]);
+    expect(result.status).toBe(500);
+    expect(result.message).toBe(errorMessage);
+    expect(result.data).toBeUndefined();
+    User.findById.mockRestore();
+  });
+});
 
-    const response = await addDivision(data);
+describe('updateDivision function', () => {
+  let divisionId;
+  let data;
+  let employees;
+  let headDivision;
 
-    expect(Division).toHaveBeenCalledWith(data);
-    expect(response.status).toBe(500);
-    expect(response.message).toBe(errorMessage);
+  beforeEach(() => {
+    divisionId = '123';
+    employees = ['456', '789'];
+    headDivision = 'abc';
+    data = {
+      name: 'Test Division',
+      employees,
+      head_division: headDivision
+    };
+  });
+
+  it('should return an error message if division is not found', async () => {
+    jest.spyOn(Division, 'findByIdAndUpdate').mockResolvedValue(null);
+    jest.spyOn(User, 'findById').mockResolvedValue({});
+
+    const result = await updateDivision(divisionId, data);
+
+    expect(result.status).toBe(400);
+    expect(result.message).toBe('Division not found');
+  });
+
+  it('should return an error message if employee or head division is not found in user collection', async () => {
+    jest.spyOn(User, 'findById').mockResolvedValue(null);
+
+    const result = await updateDivision(divisionId, data);
+
+    expect(result.status).toBe(400);
+    expect(result.message).toBe('Employee or head division not found in user collection');
+  });
+
+  it('should update division successfully', async () => {
+    const updatedDivision = {
+      _id: divisionId,
+      ...data
+    };
+    jest.spyOn(Division, 'findByIdAndUpdate').mockResolvedValue(updatedDivision);
+    jest.spyOn(User, 'findById').mockResolvedValue({});
+
+    const result = await updateDivision(divisionId, data);
+
+    expect(result.status).toBe(200);
+    expect(result.message).toBe('Division updated successfully');
+    expect(result.data).toEqual(updatedDivision);
+  });
+
+  it('should return an error message if there is an error during update', async () => {
+    jest.spyOn(Division, 'findByIdAndUpdate').mockRejectedValue(new Error('Database error'));
+    jest.spyOn(User, 'findById').mockResolvedValue({});
+
+    const result = await updateDivision(divisionId, data);
+
+    expect(result.status).toBe(500);
+    expect(result.message).toBe('Database error');
   });
 });
 
-describe("updateDivision()", () => {
-  it("should update an existing division", async () => {
-    const id = "1";
-    const data = { name: "Updated Division" };
-    const division = { _id: id, name: "Updated Division" };
-
-    Division.findByIdAndUpdate.mockResolvedValue(division);
-
-    const response = await updateDivision(id, data);
-
-    expect(Division.findByIdAndUpdate).toHaveBeenCalledWith(id, data, { new: true });
-    expect(response.status).toBe(200);
-    expect(response.message).toBe("Division updated successfully");
-    expect(response.data).toEqual(division);
-  });
-
-  it("should return 'Division not found' if the division does not exist", async () => {
-    const id = "1";
-    const data = { name: "Updated Division" };
-
-    Division.findByIdAndUpdate.mockResolvedValue(null);
-
-    const response = await updateDivision(id, data);
-
-    expect(Division.findByIdAndUpdate).toHaveBeenCalledWith(id, data, { new: true });
-    expect(response.status).toBe(400);
-    expect(response.message).toBe("Division not found");
-  });
-
-  it("should return an error message if updating a division fails", async () => {
-    const id = "1";
-    const data = { name: "Updated Division" };
-    const errorMessage = "Failed to update division";
-
-    Division.findByIdAndUpdate.mockRejectedValue(new Error(errorMessage));
-
-    const response = await updateDivision(id, data);
-
-    expect(Division.findByIdAndUpdate).toHaveBeenCalledWith(id, data, { new: true });
-    expect(response.status).toBe(500);
-    expect(response.message).toBe(errorMessage);
-  });
-});

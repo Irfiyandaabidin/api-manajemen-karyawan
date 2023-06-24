@@ -1,7 +1,7 @@
 const Attendance = require("../../models/Attendance");
 const User = require("../../models/User");
 const moment = require('moment');
-const { addAttendance, updateAttendance, getAttendance, getAttendanceByUser, fetchAttendance } = require('../domain/attendance.domain')
+const { deleteAttendance ,addAttendance, updateAttendance, getAttendance, getAttendanceByUser, fetchAttendance } = require('../domain/attendance.domain')
 
 const create = async (req, res) => {
     const employee_id = req.user.id;

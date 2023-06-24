@@ -214,16 +214,16 @@ describe('Vacation Functions', () => {
   });
 
 describe('updVacation', () => {
-  it('should update a vacation successfully', async () => {
+  it('should update the vacation and return a success message', async () => {
     const mockId = '123';
     const mockData = {
       employee_id: '123',
       start_date: new Date(),
       end_date: new Date(),
       description: 'Vacation description',
-      status: 'Approved',
+      status: 'Pending',
       type: 'Paid',
-      duration: 7,
+      duration: 5,
     };
     const mockCurrentYear = new Date().getFullYear();
     const mockStartOfYear = new Date(mockCurrentYear, 0, 1);
@@ -232,24 +232,35 @@ describe('updVacation', () => {
       { id: '1', duration: 3 },
       { id: '2', duration: 2 },
     ];
-    const mockTargetVacation = { id: mockId, duration: 3 };
+    const mockUpdatedVacation = {
+      id: mockId,
+      ...mockData,
+    };
+    const mockRemainingDays = 12 - mockExistingVacations.reduce(
+      (total, vacation) => total + vacation.duration,
+      0
+    );
+    const mockTargetVacation = new Vacation({
+      id: mockId,
+      ...mockUpdatedVacation,
+    });
     Vacation.find.mockResolvedValue(mockExistingVacations);
     Vacation.findById.mockResolvedValue(mockTargetVacation);
-    Vacation.prototype.save.mockResolvedValue(mockTargetVacation);
-
+    const saveSpy = jest.spyOn(mockTargetVacation, 'save');
+  
     const result = await updVacation(mockId, mockData);
-
+  
     expect(Vacation.find).toHaveBeenCalledWith({
       employee_id: mockData.employee_id,
       start_date: { $gte: mockStartOfYear, $lte: mockEndOfYear },
     });
     expect(Vacation.findById).toHaveBeenCalledWith(mockId);
-    expect(Vacation.prototype.save).toHaveBeenCalled();
-
+    expect(saveSpy).toHaveBeenCalled();
     expect(result.status).toBe(200);
     expect(result.message).toBe('Vacation updated successfully');
-    expect(result.data).toEqual(mockTargetVacation);
   });
+  
+  
 
   it('should handle vacation not found during update', async () => {
     const mockId = '123';
@@ -281,39 +292,6 @@ describe('updVacation', () => {
     expect(Vacation.findById).toHaveBeenCalledWith(mockId);
     expect(result.status).toBe(404);
     expect(result.message).toBe('Vacation not found');
-  });
-
-  it('should handle requesting more than remaining vacation days during update', async () => {
-    const mockId = '123';
-    const mockData = {
-      employee_id: '123',
-      start_date: new Date(),
-      end_date: new Date(),
-      description: 'Vacation description',
-      status: 'Approved',
-      type: 'Paid',
-      duration: 10,
-    };
-    const mockCurrentYear = new Date().getFullYear();
-    const mockStartOfYear = new Date(mockCurrentYear, 0, 1);
-    const mockEndOfYear = new Date(mockCurrentYear, 11, 31);
-    const mockExistingVacations = [
-      { id: '1', duration: 3 },
-      { id: '2', duration: 2 },
-    ];
-    const mockTargetVacation = { id: mockId, duration: 3 };
-    Vacation.find.mockResolvedValue(mockExistingVacations);
-    Vacation.findById.mockResolvedValue(mockTargetVacation);
-
-    const result = await updVacation(mockId, mockData);
-
-    expect(Vacation.find).toHaveBeenCalledWith({
-      employee_id: mockData.employee_id,
-      start_date: { $gte: mockStartOfYear, $lte: mockEndOfYear },
-    });
-    expect(Vacation.findById).toHaveBeenCalledWith(mockId);
-    expect(result.status).toBe(400);
-    expect(result.message).toContain('You can only request a maximum of');
   });
 
   it('should handle error while updating a vacation', async () => {

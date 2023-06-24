@@ -13,10 +13,13 @@ const createReview = async (req, res) => {
     review_date,
     review_content,
     review_score,
+  } = req.body;
+  const {
     reviewer_id,
     reviewer_role
-  } = req.body;
-    const data = {
+  } = req.user
+
+  const data = {
       employee_id,
       review_date,
       review_content,
@@ -24,8 +27,8 @@ const createReview = async (req, res) => {
       reviewer_id,
       reviewer_role
     };
-    const response = await addReview(data);
-    res.status(response.status).send(response);
+  const response = await addReview(data);
+  res.status(response.status).send(response);
 };
 
 const updateReview = async (req, res) => {
@@ -35,9 +38,11 @@ const updateReview = async (req, res) => {
     review_date,
     review_content,
     review_score,
-    reviewer_id,
-    reviewer_role,
   } = req.body;
+  const {
+    reviewer_id,
+    reviewer_role
+  } = req.user
     const data = {
       employee_id,
       review_date,

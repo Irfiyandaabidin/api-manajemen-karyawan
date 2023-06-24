@@ -2,7 +2,7 @@ const User = require("../../models/User");
 
 async function fetchUser() {
   try {
-    const data = await User.find({});
+    const data = await User.find({}, {password:0});
     return { status: 200, message: "Get User successfully", data };
   } catch (err) {
     return {
@@ -79,7 +79,7 @@ async function updateUser(id, idUser, data){
         }
         return {
             status: 403,
-            message: "Access Denied, Only user can update.",
+            message: "Access Denied, Only user can update",
         };
       } catch (err) {
         return{ status:500, message: err.message };

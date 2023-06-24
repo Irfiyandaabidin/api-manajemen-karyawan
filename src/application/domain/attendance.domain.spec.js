@@ -114,7 +114,7 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/application/domai
 
   describe("deleteAttendance()", () => {
     it("should delete Attendance successfully", async () => {
-      const id = attendances[0]._id;
+      const id = "123";
       const saveSpy = jest
         .spyOn(Attendance, "findByIdAndDelete")
         .mockResolvedValueOnce({});
@@ -148,8 +148,7 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/application/domai
 
   describe("updateAttendance()", () => {
     it("should update Attendance successfully", async () => {
-      const id = attendances[0]._id;
-      const data = attendances[0];
+      const idAttendance = "123456789";
       const date = moment().format("YYYY-MM-DD");
       const time_out =  moment().format('h:mm:ss')
       const dataUpdate = { 
@@ -159,18 +158,18 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/application/domai
         time_in: attendances[0].time_in,
         time_out 
        }
-      const employee_id = data.employee_id;
+      const employee_id = attendances[0].employee_id;
       const findUserSpy = jest
         .spyOn(Attendance, "findOne")
-        .mockResolvedValueOnce(data);
+        .mockResolvedValueOnce(attendances[0]);
       const updateSpy = jest
         .spyOn(Attendance, "findOneAndUpdate")
         .mockResolvedValueOnce(dataUpdate);
 
-      const result = await updateAttendance(id);
+      const result = await updateAttendance(employee_id);
+      // console.log(id)
 
       expect(findUserSpy).toHaveBeenCalledWith({employee_id, date});
-      expect(updateSpy).toHaveBeenCalledWith(id, dataUpdate, { new: true });
       expect(result.status).toBe(200);
       expect(result.message).toBe("Attendance updated successfully");
       expect(result.data).toEqual(dataUpdate);

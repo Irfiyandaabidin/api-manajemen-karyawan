@@ -75,7 +75,11 @@ const users = [
 ];
 
 async function insertManyUsers() {
-  await User.insertMany(users);
+  const salt = await bcrypt.genSalt(10);
+  for(const user of users){
+    user.password = await bcrypt.hash(user.password, salt); 
+  }
+  return await User.insertMany(users);
 }
 
 async function insertHrUser() {

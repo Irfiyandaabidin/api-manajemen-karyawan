@@ -89,7 +89,7 @@ async function updateAttendance(id) {
                 employee_id: id,
                 date: attendance.date,
                 time_in: attendance.time_in,
-                status: "Done",
+                status: "completed",
                 time_out: moment().format('h:mm:ss')
             }, { new: true })
             return {
