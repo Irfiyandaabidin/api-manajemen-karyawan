@@ -33,7 +33,7 @@ jobs:
         run: npm install
 
       - name: run application
-        run: npm start
+        run: npm start&
 
       - name: test if app is working
         run: until curl -v http://localhost:3000  > /dev/null; do sleep 1; done
