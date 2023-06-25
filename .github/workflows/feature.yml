@@ -13,7 +13,7 @@ env:
   DB_NAME: github-action-db
   DB_USERNAME: root
   DB_PASSWORD: root
-  URI_TEST: mongodb://root:root@localhost:27017/github-action-db
+  URI_TEST: mongodb://localhost:27017/github-action-db
 
 jobs:
   checking-feature:
