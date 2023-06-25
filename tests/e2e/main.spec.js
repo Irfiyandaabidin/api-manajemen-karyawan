@@ -28,10 +28,6 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
   let salary_id;
 
   beforeAll(async () => {
-    await mongoose.connect(process.env.URI_TEST, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
     await deleteManySalary();
     await deleteManyUsers();
     await deleteManyAttendance();
@@ -544,8 +540,9 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
     });
   })
   afterAll(async () => {
-    // await deleteManyUsers();
-    // await deleteManyAttendance();
+    await deleteManySalary();
+    await deleteManyUsers();
+    await deleteManyAttendance();
     await mongoose.disconnect();
   });
 });
