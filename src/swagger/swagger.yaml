@@ -1,0 +1,803 @@
+swagger: "2.0"
+info:
+  title: Employee Management API
+  description: |
+    This API is designed to facilitate employee management in companies. It provides features such as employee management, salary management, leave management, and others. The API is built using Node.js technology and MongoDB database. This documentation will provide information about the available endpoints in this API and how to use them.
+  version: 1.0.0
+host: localhost:3000
+basePath: /
+schemes:
+  - http
+  - https
+securityDefinitions:
+  XAuthToken:
+    type: apiKey
+    name: x-auth-token
+    in: header
+    description: |
+      authentication token for x-auth-token header
+security:
+  - XAuthToken: []
+paths:
+
+# register swagger docs
+  /auth/register:
+    post:
+      summary: Create a new user.
+      description: Create new user and return user data and only the HR role can access.
+      produces:
+        - application/json
+      tags:
+        - "Auth"
+      parameters:
+        - name: body
+          in: body
+          description: Data for creating a new user
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: "string"
+                example: "hr@example.com"
+              password:
+                type: "string"
+                example: "password123"
+              role:
+                type: string
+                example: hr
+              nik:
+                type: number
+                example: 1234526474736353
+              name:
+                type: string
+                example: John Doe
+              birth:
+                type: string
+                format: date
+                example: 1990-01-01
+              gender:
+                type: string
+                example: male
+              address:
+                type: string
+                example: 123 Main Street
+              phone:
+                type: string
+                example: 123-456-7890
+              entry_date:
+                type: string
+                format: date
+                example: 2021-01-01
+              image_profile:
+                type: string
+                example: profile.jpg
+      responses:
+        201:
+          description: OK
+          
+# login swagger docs
+  /auth/login:
+    post:
+      summary: "Login user"
+      description: "Login user for get token"
+      tags:
+        - "Auth"
+      parameters:
+        - name: "Login user"
+          in: "body"
+          required: true
+          description: "Login user body request"
+          schema:
+            type: "object"
+            properties:
+              email:
+                type: "string"
+                example: "hr@example.com"
+              password:
+                type: "string"
+                example: "password123"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+
+# user swagger docs
+  /user:
+    get:
+      summary: Return a list of user.
+      description: |
+        Returns a user with it's details.
+      tags:
+        - "Users"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    post:
+      summary: Create a new user.
+      description: Create new user and return user data and only the HR role can access.
+      produces:
+        - application/json
+      tags:
+        - "Users"
+      parameters:
+        - name: body
+          in: body
+          description: Data for creating a new user
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                example: johndoe@admin.com
+              password:
+                type: string
+                example: password
+              role:
+                type: string
+                example: employee
+              nik:
+                type: number
+                example: 1234566474736353
+              name:
+                type: string
+                example: John Doe
+              birth:
+                type: string
+                format: date
+                example: 1990-01-01
+              gender:
+                type: string
+                example: male
+              address:
+                type: string
+                example: 123 Main Street
+              phone:
+                type: string
+                example: 123-456-7890
+              entry_date:
+                type: string
+                format: date
+                example: 2021-01-01
+              image_profile:
+                type: string
+                example: profile.jpg
+      responses:
+        201:
+          description: OK
+  /user/{id}:
+    get:
+      summary: Return one of users.
+      description: |
+        Returns one user with it's details.
+      tags:
+        - "Users"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    put:
+      summary: Update one of user.
+      description: |
+        Update one user
+      tags:
+        - "Users"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - name: update user
+          in: body
+          required: true
+          description: Update user body request
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+              role:
+                type: string
+              nik:
+                type: number
+              name:
+                type: string
+              birth:
+                type: string
+                format: date
+              gender:
+                type: string
+              address:
+                type: string
+              phone:
+                type: string
+              entry_date:
+                type: string
+                format: date
+              image_profile:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    delete:
+      summary: Delete one of posts.
+      description: |
+        Delete one user and only the HR role can access.
+      tags:
+        - "Users"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+
+# salary swagger docs
+  /salary:
+    get:
+      summary: Return a list of salary
+      description: |
+        Return a salary with it's details
+      tags:
+        - "Salary"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    post:
+      summary: Create new salary.
+      description: Create new salary and return salary data and only the HR role can access.
+      tags:
+        - "Salary"
+      parameters:
+        - name: create salary
+          in: body
+          required: true
+          description: Create salary body request
+          schema:
+            type: object
+            properties:
+              employee_id:
+                type: string
+                example: 609c8df5a7c5a2001bdc5b0e
+              month:
+                type: number
+                example: 5
+              year:
+                type: number
+                example: 2021
+              basic_salary:
+                type: number
+                example: 5000000
+              allowance:
+                type: number
+                example: 1000000
+              deduction:
+                type: number
+                example: 500000
+              total_salary:
+                type: number
+                example: 5500000
+              payment_status:
+                type: string
+                example: paid
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /salary/{id}:
+    get:
+      summary: Return one salary.
+      description: |
+        Return one salary with it's details
+      tags:
+        - "Salary"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    put:
+      summary: Update salary.
+      description: |
+        update one salary and only the HR role can access.
+      tags:
+        - "Salary"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+        - name: update salary
+          in: body
+          required: true
+          description: Update salary body request
+          schema:
+            type: object
+            properties:
+              employee_id:
+                type: string
+              month:
+                type: number
+              year:
+                type: number
+              basic_salary:
+                type: number
+              allowance:
+                type: number
+              deduction:
+                type: number
+              total_salary:
+                type: number
+              payment_status:
+                type: string
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    delete:
+      summary: Delete one salary
+      description: |
+        Delete on salary and only the HR role can access.
+      tags:
+        - "Salary"
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+
+# Vacation swagger docs 
+  /vacation:
+    get:
+      summary: "Return a list of vacations"
+      description: "Return a vacation with its details"
+      tags:
+        - "Vacation"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+    post:
+      summary: "Create new vacation"
+      description: "Create new vacation and return vacation data and only the Supervisor role can access."
+      tags:
+        - "Vacation"
+      parameters:
+        - name: "create vacation"
+          in: "body"
+          required: true
+          description: "Create vacation body request"
+          schema:
+            type: "object"
+            properties:
+              employee_id:
+                type: "string"
+                example: "609c8df5a7c5a2001bdc5b0e"
+              start_date:
+                type: "string"
+                format: "date"
+                example: "2023-06-10"
+              end_date:
+                type: "string"
+                format: "date"
+                example: "2023-06-17"
+              description:
+                type: "string"
+                example: "urgent vacation"
+              status:
+                type: "string"
+                example: "approved"
+              type:
+                type: "string"
+                example: "urgent"
+              duration:
+                type: "number"
+                example: 5
+              remaining:
+                type: "number"
+                example: 7
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+  /vacation/{id}:
+    get:
+      summary: "Return one vacation"
+      description: "Return one vacation with its details"
+      tags:
+        - "Vacation"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+    put:
+      summary: "Update vacation"
+      description: "Update one vacation and only the Supervisor role can access."
+      tags:
+        - "Vacation"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+        - name: "update vacation"
+          in: "body"
+          required: true
+          description: "Update vacation body request"
+          schema:
+            type: "object"
+            properties:
+              employee_id:
+                type: "string"
+              start_date:
+                type: "string"
+                format: "date"
+              end_date:
+                type: "string"
+                format: "date"
+              description:
+                type: "string"
+              status:
+                type: "string"
+              type:
+                type: "string"
+              duration:
+                type: "number"
+              remaining:
+                type: "number"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+    delete:
+      summary: "Delete one vacation"
+      description: "Delete one vacation and only the Supervisor role can access."
+      tags:
+        - "Vacation"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+
+# employee review swagger docs
+  /employee-review:
+    get:
+      summary: "Return a list of employee reviews"
+      description: "Return an employee review with its details"
+      tags:
+        - "Employee-review"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+    post:
+      summary: "Create new employee review"
+      description: "Create new employee review and only the Supervisor role can access."
+      tags:
+        - "Employee-review"
+      parameters:
+        - name: "create employee review"
+          in: "body"
+          required: true
+          description: "Create employee review body request"
+          schema:
+            type: "object"
+            properties:
+              employee_id:
+                type: "string"
+                example: "609c8df5a7c5a2001bdc5b0e"
+              review_date:
+                type: "string"
+                format: "date"
+                example: "2023-06-10"
+              review_content:
+                type: "string"
+                example: "good employee with discipline time"
+              review_score:
+                type: "number"
+                example: 87
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+  /employee-review/{id}:
+    get:
+      summary: "Return one employee review"
+      description: "Return one employee review with its details"
+      tags:
+        - "Employee-review"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+    put:
+      summary: "Update employee review"
+      description: "Update employee review and only the Supervisor role can access."
+      tags:
+        - "Employee-review"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+        - name: "update employee review"
+          in: "body"
+          required: true
+          description: "Update employee review body request"
+          schema:
+            type: "object"
+            properties:
+              employee_id:
+                type: "string"
+              review_date:
+                type: "string"
+                format: "date"
+              review_content:
+                type: "string"
+              review_score:
+                type: "number"
+              reviewer_id:
+                type: "string"
+              reviewer_role:
+                type: "string"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+    delete:
+      summary: "Delete one employee review"
+      description: "Delete one employee review and only the Supervisor role can access."
+      tags:
+        - "Employee-review"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+
+# division swagger docs  
+  /division:
+    get:
+      summary: "Return a list of divisions"
+      description: "Return a division with its details"
+      tags:
+        - "Division"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+    post:
+      summary: "Create new division"
+      description: "Create new division and only the HR role can access."
+      tags:
+        - "Division"
+      parameters:
+        - name: "create division"
+          in: "body"
+          required: true
+          description: "Create division body request"
+          schema:
+            type: "object"
+            properties:
+              division_name:
+                type: "string"
+                example: "john"
+              description:
+                type: "string"
+                example: "server service"
+              employees:
+                type: "array"
+                example: 
+                  - "609c8df5a7c5a2001bdc5b0e"
+                  - "609c8df5a7c5a2001bdc5b0e"
+              start_date:
+                type: "string"
+                format: "date"
+                example: "2023-04-10"
+              head_division:
+                type: "string"
+                example: "609c8df5a7c5a2001bdc5b0e"
+              budget:
+                type: "number"
+                example: 20
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+  /division/{id}:
+    get:
+      summary: "Return one division"
+      description: "Return one division with its details"
+      tags:
+        - "Division"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+    put:
+      summary: "Update division"
+      description: "Update one division and only the HR role can access."
+      tags:
+        - "Division"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+        - name: "update division"
+          in: "body"
+          required: true
+          description: "Update division body request"
+          schema:
+            type: "object"
+            properties:
+              division_name:
+                type: "string"
+              description:
+                type: "string"
+              employees:
+                type: "array"
+              start_date:
+                type: "string"
+                format: "date"
+              head_division:
+                type: "string"
+              budget:
+                type: "number"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+    delete:
+      summary: "Delete one division"
+      description: "Delete one division and only the HR role can access"
+      tags:
+        - "Division"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "OK"
+
+# attendance swagger docs          
+  /attendance:
+    post:
+      summary: "Create 'time in' of attendance"
+      description: "Create 'time in' of attendance with user id is login and only the Employee role can access."
+      tags:
+        - "Attendance"
+      responses:
+        201:
+          description: "OK"
+    put:
+      summary: "Update 'time out' of attendance"
+      description: "Update 'time out' of attendance with user id is login and only the Employee role can access"
+      tags:
+        - "Attendance"
+      responses:
+        200:
+          description: "OK"
+    get:
+      summary: "Get details attendance"
+      description: "Get details attendance with user id is login"
+      tags:
+        - "Attendance"
+      responses:
+        200:
+          description: "OK"
+  /attendance/{id}:
+    delete:
+      summary: "Delete one attendance employee"
+      description: "Delete one attendance employee and only the supervisor role can access"
+      tags:
+        - "Attendance"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+      responses:
+        200:
+          description: "OK"
+    get:
+      summary: "Return one attendance"
+      description: "Return one attendance employee with id attendace"
+      tags:
+        - "Attendance"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+      responses:
+        200:
+          description: "OK"  
+  /attendance/user/{id}:
+    get:
+      summary: "Return attendance employee"
+      description: "Return attendance with employee id and details"
+      tags:
+        - "Attendance"
+      parameters:
+        - in: "path"
+          name: "id"
+          type: "string"
+          required: true
+      responses:
+        200:
+          description: "OK"

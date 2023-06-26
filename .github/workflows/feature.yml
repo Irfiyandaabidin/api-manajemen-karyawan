@@ -1,0 +1,65 @@
+name: Feature checking
+
+on:
+  push:
+    branches:
+      - '**' # semua branch
+      - '!master' # kecuali master
+      - '!staging' # kecuali staging
+
+env:
+  DB_HOST: localhost
+  DB_PORT: 27017
+  DB_NAME: github-action-db
+  DB_USERNAME: root
+  DB_PASSWORD: root
+  URI_TEST: mongodb://localhost:27017/github-action-db
+  JWT_SECRET: secret
+
+jobs:
+  checking-feature:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+
+      - name: setup nodejs v18
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: install dependencies
+        run: npm install
+
+      - name: run application
+        run: npm start&
+
+      - name: test if app is working
+        run: until curl -v http://localhost:3000  > /dev/null; do sleep 1; done
+  test-feature:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    needs: checking-feature
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
+        with:
+          mongodb-version: '6.0'
+          mongodb-username: root
+          mongodb-password: root
+          mongodb-db: github-action-db
+
+      - name: setup nodejs v18
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: install dependencies
+        run: npm install
+
+      - name: test features
+        run: npm run test
