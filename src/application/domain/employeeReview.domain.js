@@ -50,29 +50,30 @@ async function destroyReview(id){
     }
 }
 
-async function addReview(data){
+async function addReview(data) {
     try {
-        const user = await User.findById(data.employee_id);
-        if(user){
-            const review = new Review(data);
-            const doc = await review.save({ new: true });
-            return {
-                status: 201,
-                message: "Review added successfully",
-                data: doc,
-            };
-        }
+      const user = await User.findById(data.employee_id);
+      if (user) {
+        const review = new Review(data);
+        const doc = await review.save();
         return {
-            status: 404,
-            message: "Id employee not found"
-        }
-    } catch (err) {
-        return {
-            status: 500,
-            message: err.message
+          status: 201,
+          message: "Review added successfully",
+          data: doc,
         };
+      }
+      return {
+        status: 400,
+        message: "Employee not found",
+      };
+    } catch (err) {
+      return {
+        status: 500,
+        message: err.message,
+      };
     }
-}
+  }
+  
 
 async function updReview(id, data){
     try {

@@ -1,5 +1,4 @@
 const Vacation = require("../../src/models/Vacation");
-const bcrypt = require("bcryptjs");
 
 const vacations = [
     {
@@ -48,6 +47,16 @@ const vacations = [
     }
 ]
 
+const insertManyVacation = async () => {
+    return await Vacation.insertMany(vacations);
+}
+
+async function deleteManyVacation() {
+    await Vacation.deleteMany({});
+}
+
 module.exports = {
     vacations,
+    insertManyVacation,
+    deleteManyVacation,
 };
