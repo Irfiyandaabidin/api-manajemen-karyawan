@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --verbose",
     "test:coverage": "jest --coverage",
-    "dev": "nodemon --ext js,json,yaml index.js"
+    "dev": "nodemon --ext js,json,yaml index.js",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",

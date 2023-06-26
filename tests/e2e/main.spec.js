@@ -34,10 +34,6 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
   let vacation_id;
 
   beforeAll(async () => {
-    await mongoose.connect(process.env.URI_TEST, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
     await deleteManySalary();
     await deleteManyUsers();
     await deleteManyAttendance();
@@ -724,8 +720,6 @@ describe("DELETE /division/:id", () => {
 
 });
 
-/*
-
 //Review
 describe("POST /review", () => {
   it("should return 200 if user is supervisor and add review succes", async () => {
@@ -1078,4 +1072,3 @@ afterAll(async () => {
   //await mongoose.disconnect();
 });
 });
-*/
