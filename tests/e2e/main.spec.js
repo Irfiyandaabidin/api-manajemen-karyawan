@@ -1082,12 +1082,12 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
   });
 
   afterAll(async () => {
-    // await deleteManyUsers();
-    // await deleteManyAttendance();
-    // await deleteManyDivision();
-    // await deleteManyReview();
-    // await deleteManySalary();
-    // await deleteManyVacation();
-    // await mongoose.disconnect();
+    await deleteManyUsers();
+    await deleteManyAttendance();
+    await deleteManyDivision();
+    await deleteManyReview();
+    await deleteManySalary();
+    await deleteManyVacation();
+    await mongoose.disconnect();
   });
 });
