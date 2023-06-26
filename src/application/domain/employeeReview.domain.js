@@ -55,7 +55,7 @@ async function addReview(data) {
       const user = await User.findById(data.employee_id);
       if (user) {
         const review = new Review(data);
-        const doc = await review.save();
+        const doc = await review.save({new: true});
         return {
           status: 201,
           message: "Review added successfully",

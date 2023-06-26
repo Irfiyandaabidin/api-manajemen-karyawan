@@ -13,31 +13,20 @@ const yaml = require('js-yaml');
 const swaggerUi = require('swagger-ui-express');
 const fs = require('fs');
 const cors = require('cors');
+const db = require("./database/index");
 require('dotenv').config();
 
 
 function server() {
     const app = express();
+    db.connect().catch(console.log())
     app.use(
         cors({
             origin: '*',
         })
     );
-    const dbUsername = process.env.DB_USERNAME;
-    const dbPassword = process.env.DB_PASSWORD;
-    const dbHost = process.env.DB_HOST;
-    const dbPort = process.env.DB_PORT;
-    const dbName = process.env.DB_NAME;
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
-    
-    mongoose.connect(`mongodb://${dbUsername}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`, { useNewUrlParser: true })
-        .then(() => {
-            console.log('Database connected');
-        })
-        .catch((err) => {
-            console.log(err)
-        })
     
     const swaggerDocument = yaml.load(
         fs.readFileSync('./src/swagger/swagger.yaml', 'utf-8')
