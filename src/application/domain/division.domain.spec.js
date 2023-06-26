@@ -52,7 +52,7 @@ describe("getDivision()", () => {
 
     expect(Division.findById).toHaveBeenCalledWith(id);
     expect(response.status).toBe(200);
-    expect(response.message).toBe("Get Division successfully.");
+    expect(response.message).toBe("Get Division successfully");
     expect(response.data).toEqual(division);
   });
 

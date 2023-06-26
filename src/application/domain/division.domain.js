@@ -25,14 +25,14 @@ async function getDivision(id) {
     }
     return {
       status: 200,
-      message: "Get Division successfully.",
+      message: "Get Division successfully",
       data: doc
     };
   } catch (err) {
     return {
       status: 500,
       message: err.message
-    }
+    };
   }
 }
 
@@ -51,13 +51,16 @@ async function deleteDivision(id){
   }
 }
 
-async function addDivision(data){
-  try{
+async function addDivision(data) {
+  try {
     const division = new Division(data);
     const employeePromises = data.employees.map(id => User.findById(id));
     const employees = await Promise.all(employeePromises);
     const head_division = await User.findById(data.head_division);
-    if(employees.every(employee => employee) && head_division){
+    const employeesExist = employees.every(employee => employee !== null);
+    const headDivisionExist = head_division !== null;
+    
+    if (employeesExist && headDivisionExist) {
       const doc = await division.save({ new: true });
       return {
         status: 201,
@@ -67,15 +70,15 @@ async function addDivision(data){
     }
     return {
       status: 400,
-      message: "Employee or head division not found in user collection"
-    }
-  } catch (err){
+      message: "Employee or head division not found in user collection",
+    };
+  } catch (err) {
     return {
       status: 500,
-      message: err.message
+      message: err.message,
     };
   }
-}
+};
 
 async function updateDivision(id, data){
   try {

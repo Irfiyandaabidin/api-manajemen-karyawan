@@ -1,10 +1,12 @@
+const Review = require("../../src/models/EmployeeReview");
+
 const reviews = [
     {
-      "employee_id": "615a6d7fca8f9f8f19a9e8b9",
+      "employee_id": "649877a6b02a25377da1bb1e",
       "review_date": "2021-10-05T00:00:00.000Z",
       "review_content": "Great work, keep it up!",
       "review_score": 9,
-      "reviewer_id": "615a6d7fca8f9f8f19a9e8b8",
+      "reviewer_id": "649877a4b02a25377da1baf4",
       "reviewer_role": "HR"
     },
     {
@@ -41,6 +43,16 @@ const reviews = [
     }
   ]
 
+  const insertManyReview = async () => {
+    return await Review.insertMany(reviews);
+}
+
+async function deleteManyReview() {
+    await Review.deleteMany({});
+}
+
 module.exports = {
-    reviews
+    reviews,
+    insertManyReview,
+    deleteManyReview,
 }

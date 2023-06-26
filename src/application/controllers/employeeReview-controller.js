@@ -14,10 +14,8 @@ const createReview = async (req, res) => {
     review_content,
     review_score,
   } = req.body;
-  const {
-    reviewer_id,
-    reviewer_role
-  } = req.user
+  const reviewer_id = req.user.id
+  const reviewer_role = req.user.role
 
   const data = {
       employee_id,
