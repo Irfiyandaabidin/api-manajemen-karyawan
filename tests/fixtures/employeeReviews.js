@@ -56,9 +56,3 @@ module.exports = {
     insertManyReview,
     deleteManyReview,
 }
-
-module.exports = {
-    reviews,
-    insertManyReview,
-    deleteManyReview,
-}

@@ -25,7 +25,7 @@ async function getDivision(id) {
     }
     return {
       status: 200,
-      message: "Get Division successfully.",
+      message: "Get Division successfully",
       data: doc
     };
   } catch (err) {

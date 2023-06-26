@@ -9,7 +9,7 @@ const vacations = [
         status:"await",
         type:"urgent",
         duration:5,
-        remaining:7
+        remaining:12
     },
     {
         employee_id: "64956768efc3895c2e4c700a",

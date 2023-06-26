@@ -582,7 +582,7 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
         .post("/division")
         .set("x-auth-token", hrToken)
         .send({
-          division_name: "Tech Division",
+          division_name: "HR Division",
           description: "Responsible for HR activities",
           employees: [employee_id],
           start_date: "2021-01-01",
@@ -591,8 +591,9 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
         });
       expect(res.body.message).toBe("Division added successfully");
       expect(res.statusCode).toEqual(201);
-      expect(res.body.data.division_name).toBe("Tech Division");
+      expect(res.body.data.division_name).toBe("HR Division");
       expect(res.body.data.description).toBe("Responsible for HR activities");
+      expect(res.body.data.employees).toEqual([employee_id]);
       expect(res.body.data.start_date).toBe("2021-01-01T00:00:00.000Z");
       expect(res.body.data.head_division).toBe(employee_id);
       expect(res.body.data.budget).toBe(90000);
@@ -650,9 +651,9 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
         .set({
           division_name: "HR Division",
           description: "Responsible for HR activities",
-          employees: ["12ab34cd56ef7890fe1d2c3b", "1a2b3c4d5e6f7a8b9c0d1e2f"],
+          employees: ["6097a8b6f54d2a6f4c7a8e95", "6097a8b6f54d2a6f4c7a8e96"],
           start_date: "2021-01-01",
-          head_division: "64991ad3185b61fae75951d1",
+          head_division: "6097a8b6f54d2a6f4c7a8e95",
           budget: 100000,
         });
       expect(res.statusCode).toEqual(401);
@@ -685,7 +686,7 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
           .get("/division")
           .set("x-auth-token", tokens[i]);
         expect(res.statusCode).toEqual(200);
-        expect(res.body.data).toHaveLength(5);
+        expect(res.body.data).toHaveLength(6);
       }
     });
   });
@@ -720,7 +721,7 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
         .delete(`/division/${division_id}`)
         .set("x-auth-token", hrToken);
       expect(res.statusCode).toEqual(200);
-      expect(res.body.message).toBe("division delete successfully");
+      expect(res.body.message).toBe("Division delete successfully");
     });
     it("should return 404 if user is hr but id division not found", async () => {
       const res = await supertest(app)
@@ -744,37 +745,33 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
   });
 
   //Review
-  describe("POST /review", () => {
+  describe("POST /employee-review", () => {
     it("should return 200 if user is supervisor and add review succes", async () => {
       const res = await supertest(app)
-        .post("/review")
+        .post("/employee-review")
         .set("x-auth-token", supervisorToken)
         .send({
-          employee_id: "649877a6b02a25377da1bb1e",
+          employee_id: employee_id,
           review_date: "2021-10-05T00:00:00.000Z",
-          review_content: "Great work, keep it up!",
-          review_score: 9,
-          reviewer_id: "649877a4b02a25377da1baf4",
-          reviewer_role: "HR",
+          review_content: "Needs improvement in communication",
+          review_score: 6,
         });
-      expect(res.status).toBe(201);
       expect(res.body.message).toBe("Review added successfully");
-      expect(res.body.data.employee_id).toBe("649877a6b02a25377da1bb1e");
+      expect(res.statusCode).toBe(201);
+      expect(res.body.data.employee_id).toBe(employee_id);
       expect(res.body.data.review_date).toBe("2021-10-05T00:00:00.000Z");
-      expect(res.body.data.review_content).toBe("Great work, keep it up!");
-      expect(res.body.data.review_score).toBe(9);
-      expect(res.body.data.reviewer_id).toBe("649877a4b02a25377da1baf4");
-      expect(res.body.data.reviewer_role).toBe("HR");
+      expect(res.body.data.review_content).toBe("Needs improvement in communication");
+      expect(res.body.data.review_score).toBe(6);
       review_id = res.body.data._id;
     });
     it("should return 401 if user is not logged in", async () => {
-      const res = await supertest(app).post("/review").send(reviews[0]);
+      const res = await supertest(app).post("/employee-review").send(reviews[0]);
       expect(res.statusCode).toEqual(401);
     });
 
     it("should return 401 if token is invalid", async () => {
       const res = await supertest(app)
-        .post("/review")
+        .post("/employee-review")
         .set("x-auth-token", "invalid_token")
         .send(reviews[0]);
       expect(res.statusCode).toEqual(401);
@@ -782,7 +779,7 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
 
     it("should return 401 if user is not supervisor", async () => {
       const res = await supertest(app)
-        .post("/review")
+        .post("/employee-review")
         .set("x-auth-token", employeeToken)
         .send(reviews[0]);
       expect(res.statusCode).toEqual(401);
@@ -795,21 +792,17 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
         .put(`/employee-review/${review_id}`)
         .set("x-auth-token", supervisorToken)
         .send({
-          employee_id: "649877a6b02a25377da1bb1e",
+          employee_id: employee_id,
           review_date: "2021-10-05T00:00:00.000Z",
           review_content: "Great work, keep it up!",
           review_score: 8,
-          reviewer_id: "649877a4b02a25377da1baf4",
-          reviewer_role: "HR",
         });
-      expect(res.status).toBe(201);
-      expect(res.body.message).toBe("Review added successfully");
-      expect(res.body.data.employee_id).toBe("649877a6b02a25377da1bb1e");
+      expect(res.body.message).toBe("Review updated successfully");
+      expect(res.statusCode).toBe(200);
+      expect(res.body.data.employee_id).toBe(employee_id);
       expect(res.body.data.review_date).toBe("2021-10-05T00:00:00.000Z");
       expect(res.body.data.review_content).toBe("Great work, keep it up!");
       expect(res.body.data.review_score).toBe(8);
-      expect(res.body.data.reviewer_id).toBe("649877a4b02a25377da1baf4");
-      expect(res.body.data.reviewer_role).toBe("HR");
       review_id = res.body.data._id;
     });
 
@@ -822,8 +815,6 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
           review_date: "2021-10-05T00:00:00.000Z",
           review_content: "Great work, keep it up!",
           review_score: 8,
-          reviewer_id: "649877a4b02a25377da1baf4",
-          reviewer_role: "HR",
         });
       expect(res.statusCode).toEqual(401);
       expect(res.body.message).toBe(
@@ -836,15 +827,15 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
       expect(res.statusCode).toEqual(401);
     });
   });
-  describe("GET /review", () => {
+  describe("GET /employee-review", () => {
     it("should return 401 if review is not logged in", async () => {
-      const res = await supertest(app).get("/review");
+      const res = await supertest(app).get("/employee-review");
       expect(res.statusCode).toEqual(401);
     });
 
     it("should return 401 if token is invalid", async () => {
       const res = await supertest(app)
-        .get("/review")
+        .get("/employee-review")
         .set("x-auth-token", "invalid_token");
       expect(res.statusCode).toEqual(401);
     });
@@ -852,10 +843,10 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
     it("should return 200 if review valid token", async () => {
       for (let i = 0; i < tokens.length; i++) {
         const res = await supertest(app)
-          .get("/review")
+          .get("/employee-review")
           .set("x-auth-token", tokens[i]);
         expect(res.statusCode).toEqual(200);
-        expect(res.body.data).toHaveLength(5);
+        expect(res.body.data).toHaveLength(6);
       }
     });
   });
@@ -866,8 +857,9 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
         const res = await supertest(app)
           .get(`/employee-review/${review_id}`)
           .set("x-auth-token", tokens[i]);
-        expect(res.status).toBe(200);
-        expect(res.body.message).toBe("Get review successfully");
+          expect(res.body.message).toBe("Get Review successfully");
+          expect(res.status).toBe(200);
+        
       }
     });
 
@@ -889,8 +881,8 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
       const res = await supertest(app)
         .delete(`/employee-review/${review_id}`)
         .set("x-auth-token", supervisorToken);
+      expect(res.body.message).toBe("Review delete successfully");
       expect(res.statusCode).toEqual(200);
-      expect(res.body.message).toBe("review delete successfully");
     });
     it("should return 404 if user is supervisor but id review not found", async () => {
       const res = await supertest(app)
@@ -927,9 +919,8 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
           status: "await",
           type: "urgent",
           duration: 5,
-          remaining: 7,
         });
-      expect(res.status).toEqual(201);
+      expect(res.statusCode).toEqual(201);
       expect(res.body.message).toBe("Vacation added successfully");
       expect(res.body.data.employee_id).toBe("64895f31901ab251dd08ad01");
       expect(res.body.data.start_date).toBe("2023-06-25T00:00:00.000Z");
@@ -938,7 +929,6 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
       expect(res.body.data.status).toBe("await");
       expect(res.body.data.type).toBe("urgent");
       expect(res.body.data.duration).toBe(5);
-      expect(res.body.data.remaining).toBe(7);
       vacation_id = res.body.data._id;
     });
     it("should return 401 if user is not logged in", async () => {
@@ -970,24 +960,22 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
         .set("x-auth-token", supervisorToken)
         .send({
           employee_id: "64895f31901ab251dd08ad01",
-          start_date: "2023-06-25",
-          end_date: "2023-06-28",
+          start_date: "2023-06-25T00:00:00.000Z",
+          end_date: "2023-06-28T00:00:00.000Z",
           description: "Cuti mendesak",
-          status: "await",
+          status: "approved",
           type: "urgent",
           duration: 6,
-          remaining: 6,
         });
-      expect(res.status).toBe(201);
-      expect(res.body.message).toBe("Vacation added successfully");
+      expect(res.body.message).toBe("Vacation updated successfully");
+      expect(res.statusCode).toEqual(200);
       expect(res.body.data.employee_id).toBe("64895f31901ab251dd08ad01");
-      expect(res.body.data.start_date).toBe("2023-06-25");
-      expect(res.body.data.end_date).toBe("2023-06-28");
+      expect(res.body.data.start_date).toBe("2023-06-25T00:00:00.000Z");
+      expect(res.body.data.end_date).toBe("2023-06-28T00:00:00.000Z");
       expect(res.body.data.description).toBe("Cuti mendesak");
-      expect(res.body.data.status).toBe("await");
+      expect(res.body.data.status).toBe("approved");
       expect(res.body.data.type).toBe("urgent");
       expect(res.body.data.duration).toBe(6);
-      expect(res.body.data.remaining).toBe(6);
       vacation_id = res.body.data._id;
     });
 
@@ -1000,10 +988,9 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
           start_date: "2023-06-25",
           end_date: "2023-06-28",
           description: "Cuti mendesak",
-          status: "await",
+          status: "approved",
           type: "urgent",
           duration: 6,
-          remaining: 6,
         });
       expect(res.statusCode).toEqual(401);
       expect(res.body.message).toBe(
@@ -1016,6 +1003,7 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
       expect(res.statusCode).toEqual(401);
     });
   });
+
   describe("GET /vacation", () => {
     it("should return 401 if review is not logged in", async () => {
       const res = await supertest(app).get("/vacation");
@@ -1100,6 +1088,6 @@ describe("/home/irfiyanda/Documents/api-manajemen-karyawan/src/tests/e2e/main.sp
     // await deleteManyReview();
     // await deleteManySalary();
     // await deleteManyVacation();
-    await mongoose.disconnect();
+    // await mongoose.disconnect();
   });
 });
