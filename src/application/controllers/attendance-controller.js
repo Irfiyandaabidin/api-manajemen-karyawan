@@ -2,6 +2,8 @@ const Attendance = require("../../models/Attendance");
 const User = require("../../models/User");
 const moment = require('moment');
 const { deleteAttendance ,addAttendance, updateAttendance, getAttendance, getAttendanceByUser, fetchAttendance } = require('../domain/attendance.domain')
+const momenttz = require('moment-timezone');
+momenttz.tz.setDefault('Asia/Jakarta');
 
 const create = async (req, res) => {
     const employee_id = req.user.id;
@@ -9,7 +11,7 @@ const create = async (req, res) => {
     const data = {
         employee_id,
         date: moment().format('YYYY-MM-DD'),
-        time_in: moment().format('h:mm:ss'),
+        time_in: momenttz().format('h:mm:ss'),
         status: "in"
     };
     const response = await addAttendance(data);

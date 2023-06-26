@@ -20,13 +20,69 @@ security:
   - XAuthToken: []
 paths:
 
+# register swagger docs
+  /auth/register:
+    post:
+      summary: Create a new user.
+      description: Create new user and return user data and only the HR role can access.
+      produces:
+        - application/json
+      tags:
+        - "Auth"
+      parameters:
+        - name: body
+          in: body
+          description: Data for creating a new user
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: "string"
+                example: "hr@example.com"
+              password:
+                type: "string"
+                example: "password123"
+              role:
+                type: string
+                example: hr
+              nik:
+                type: number
+                example: 1234526474736353
+              name:
+                type: string
+                example: John Doe
+              birth:
+                type: string
+                format: date
+                example: 1990-01-01
+              gender:
+                type: string
+                example: male
+              address:
+                type: string
+                example: 123 Main Street
+              phone:
+                type: string
+                example: 123-456-7890
+              entry_date:
+                type: string
+                format: date
+                example: 2021-01-01
+              image_profile:
+                type: string
+                example: profile.jpg
+      responses:
+        201:
+          description: OK
+          
 # login swagger docs
   /auth/login:
     post:
       summary: "Login user"
       description: "Login user for get token"
       tags:
-        - "Login"
+        - "Auth"
       parameters:
         - name: "Login user"
           in: "body"
@@ -649,7 +705,7 @@ paths:
               description:
                 type: "string"
               employees:
-                type: "string"
+                type: "array"
               start_date:
                 type: "string"
                 format: "date"

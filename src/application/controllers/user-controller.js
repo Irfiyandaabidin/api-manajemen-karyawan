@@ -14,11 +14,9 @@ const create = async (req, res) => {
   await check('role', 'role is hr, employee, or supervisor').isIn(['hr', 'employee', 'supervisor']).optional().run(req);
   await check('nik', 'nik is integer and length mus be 16').isInt({min:1000000000000000, max:9999999999999999}).optional().run(req);
   await check('name', 'name is string').isString().optional().run(req);
-  await check('birth', 'birth is date').isDate().optional().run(req);
   await check('gender', 'gender just male or female').isIn(['male', 'female']).optional().run(req);
   await check('address', 'address is string').isString().optional().run(req);
   await check('phone', 'phone is length 12').isLength(12).optional().run(req);
-  await check('entry_date', 'entry_date is date').isDate().optional().run(req);
   await check('image_profile', 'image_profile is string').isString().optional().run(req);
   const errors = validationResult(req);
   if(!errors.isEmpty()) {
@@ -79,16 +77,14 @@ const update = async (req, res) => {
   await check('role', 'role is hr, employee, or supervisor').isIn(['hr', 'employee', 'supervisor']).optional().run(req);
   await check('nik', 'nik is integer and length mus be 16').isInt({min:1000000000000000, max:9999999999999999}).optional().run(req);
   await check('name', 'name is string').isString().optional().run(req);
-  await check('birth', 'birth is date').isDate().optional().run(req);
   await check('gender', 'gender just male or female').isIn(['male', 'female']).optional().run(req);
   await check('address', 'address is string').isString().optional().run(req);
   await check('phone', 'phone is length 12').isLength(12).optional().run(req);
-  await check('entry_date', 'entry_date is date').isDate().optional().run(req);
   await check('image_profile', 'image_profile is string').isString().optional().run(req);
   const errors = validationResult(req);
   if(!errors.isEmpty()) {
-      return res.status(400)
-      .json({ errors: errors.array() });
+    return res.status(400)
+    .json({ errors: errors.array() });
   }
   const { id } = req.params;
   const idUser = req.user.id;
@@ -105,9 +101,11 @@ const update = async (req, res) => {
     entry_date,
     image_profile,
   } = req.body;
+  const salt = await bcrypt.genSalt(10);
+  const cryptPasswordUpdate = await bcrypt.hash(password, salt);
   const data = {
     email,
-    password,
+    password: cryptPasswordUpdate,
     role,
     nik,
     name,

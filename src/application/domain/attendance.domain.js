@@ -1,5 +1,7 @@
 const Attendance = require("../../models/Attendance");
 const moment = require('moment')
+const momenttz = require('moment-timezone');
+momenttz.tz.setDefault('Asia/Jakarta');
 
 async function fetchAttendance() {
     try {
@@ -90,7 +92,7 @@ async function updateAttendance(id) {
                 date: attendance.date,
                 time_in: attendance.time_in,
                 status: "completed",
-                time_out: moment().format('h:mm:ss')
+                time_out: momenttz.tz("Asia/Jakarta").format('h:mm:ss')
             }, { new: true })
             return {
                 status: 200,
