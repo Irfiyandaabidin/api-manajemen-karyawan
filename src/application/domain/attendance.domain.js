@@ -43,7 +43,7 @@ async function getAttendance(id) {
 
 async function getAttendanceByUser(id) {
     try {
-        const doc = await Attendance.find({ id });
+        const doc = await Attendance.find({ employee_id: id });
         return {
             status: 200,
             message: "Get Attendance by user successfully.",
