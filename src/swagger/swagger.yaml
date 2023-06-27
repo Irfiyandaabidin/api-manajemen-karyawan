@@ -63,7 +63,7 @@ paths:
                 example: 123 Main Street
               phone:
                 type: string
-                example: 123-456-7890
+                example: "123456789013"
               entry_date:
                 type: string
                 format: date
@@ -132,10 +132,10 @@ paths:
             properties:
               email:
                 type: string
-                example: johndoe@admin.com
+                example: johndoe@example.com
               password:
                 type: string
-                example: password
+                example: password123
               role:
                 type: string
                 example: employee
@@ -157,7 +157,7 @@ paths:
                 example: 123 Main Street
               phone:
                 type: string
-                example: 123-456-7890
+                example: 123456789019
               entry_date:
                 type: string
                 format: date
@@ -298,7 +298,7 @@ paths:
                 example: 5500000
               payment_status:
                 type: string
-                example: paid
+                example: unpaid
       produces:
         - application/json
       responses:
@@ -425,9 +425,6 @@ paths:
               duration:
                 type: "number"
                 example: 5
-              remaining:
-                type: "number"
-                example: 7
       produces:
         - "application/json"
       responses:
@@ -481,8 +478,6 @@ paths:
               type:
                 type: "string"
               duration:
-                type: "number"
-              remaining:
                 type: "number"
       produces:
         - "application/json"
@@ -590,10 +585,6 @@ paths:
                 type: "string"
               review_score:
                 type: "number"
-              reviewer_id:
-                type: "string"
-              reviewer_role:
-                type: "string"
       produces:
         - "application/json"
       responses:
@@ -642,10 +633,10 @@ paths:
             properties:
               division_name:
                 type: "string"
-                example: "john"
+                example: "IT Division"
               description:
                 type: "string"
-                example: "server service"
+                example: "IT division service description"
               employees:
                 type: "array"
                 example: 
