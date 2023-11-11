@@ -33,12 +33,7 @@ Make sure you have the following installed on your machine:
    npm install
    ```
 
-4. Create a `.env` file in the root of the project and configure the following variables:
-
-   ```env
-   MONGODB_URI=<your-mongodb-uri>
-   JWT_SECRET=<your-jwt-secret>
-   ```
+4. Create an .env file and fill it with variables according to .env.example
 
 ### Running the Project
 
